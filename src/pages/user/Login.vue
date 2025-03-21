@@ -3,8 +3,7 @@
 		<!-- 返回按钮 -->
 		<view class="back-button" @click="goBack">
 			<view class="back-icon">
-				<!-- 这里使用图标，暂时用背景色代替 -->
-				<view class="placeholder-icon"></view>
+				<fui-icon name="arrowleft" :size="40"></fui-icon>
 			</view>
 			<text class="back-text">登录</text>
 		</view>
@@ -71,6 +70,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import fuiIcon from '../../components/firstui/FirstUI-vue/components/firstui/fui-icon/fui-icon.vue';
 
 // 声明uni类型，避免TypeScript报错
 declare const uni: any;
@@ -196,12 +196,12 @@ const goBack = () => {
 	
 	.back-icon {
 		margin-right: 10rpx;
+		display: flex;
+		align-items: center;
 		
-		.placeholder-icon {
-			width: 40rpx;
-			height: 40rpx;
-			background-color: #EEEEEE;
-			border-radius: 50%;
+		.back-icon-text {
+			font-size: 40rpx;
+			color: #333;
 		}
 	}
 	
@@ -220,35 +220,35 @@ const goBack = () => {
 }
 
 .cloud-icon {
-	margin-bottom: 40rpx;
+	margin-bottom: 0rpx;
 	
 	.logo-image {
-		width: 160rpx;
-		height: 120rpx;
+		width: 200rpx;
+		height: 160rpx;
 	}
 }
 
 .welcome-text {
 	text-align: center;
-	margin-bottom: 80rpx;
+	margin-bottom: 60rpx;
 	
 	.title {
 		display: block;
-		font-size: 40rpx;
+		font-size: 35rpx;
 		font-weight: bold;
 		color: #333333;
-		margin-bottom: 20rpx;
+		margin-bottom: 10rpx;
 	}
 	
 	.subtitle {
 		display: block;
-		font-size: 28rpx;
+		font-size: 27rpx;
 		color: #999999;
 	}
 }
 
 .form-container {
-	width: 100%;
+	width: 90%;
 	padding: 0 20rpx;
 }
 
@@ -293,10 +293,10 @@ const goBack = () => {
 	
 	.login-button {
 		width: 100%;
-		height: 90rpx;
+		height: 70rpx;
 		background-color: #1890FF;
 		color: #FFFFFF;
-		font-size: 32rpx;
+		font-size: 26rpx;
 		font-weight: bold;
 		border-radius: 45rpx;
 		display: flex;
