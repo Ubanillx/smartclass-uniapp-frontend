@@ -1,0 +1,7 @@
+// 英语
+{
+	"fui-slider-captcha.title": "Security verification",
+	"fui-slider-captcha.tip": "Drag the slider below to finish the puzzle",
+	"fui-slider-captcha.resource": "Échec du traitement des ressources d'image",
+	"fui-slider-captcha.support": "Les images au format Base64 ne sont actuellement pas prises en charge"
+}

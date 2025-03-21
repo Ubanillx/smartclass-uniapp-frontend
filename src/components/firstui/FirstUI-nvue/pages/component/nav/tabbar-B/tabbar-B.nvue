@@ -1,0 +1,159 @@
+<template>
+	<view class="fui-wrap">
+		<swiper class="fui-swiper__wrap" :current="current" :duration="300" @change="change">
+			<swiper-item class="fui-swiper__item" v-for="(tab, index) in tabBar" :key="index">
+				<!-- #ifdef APP-NVUE -->
+				<list class="fui-scroll__wrap" enableBackToTop="true" scroll-y loadmoreoffset="15">
+					<cell>
+						<text class="fui-text">{{texts[index]}}</text>
+					</cell>
+					<cell>
+						<cell>
+							<view class="fui-tabbar__h" :style="{height:height+'px'}"> </view>
+						</cell>
+					</cell>
+				</list>
+				<!-- #endif -->
+				<!-- #ifndef APP-NVUE -->
+				<scroll-view scroll-y class="fui-scroll__wrap">
+					<view class="fui-text">{{texts[index]}}</view>
+					<view class="fui-tabbar__h" :style="{height:height+'px'}"> </view>
+				</scroll-view>
+				<!-- #endif -->
+			</swiper-item>
+		</swiper>
+
+		<fui-tabbar :tabBar="tabBar" :current="current" @init="init" @click="itemClick"></fui-tabbar>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				current: 0,
+				tabBar: [{
+						text: "组件",
+						iconPath: "/static/images/tabbar/assembly_default_3x.png",
+						selectedIconPath: "/static/images/tabbar/assembly_selected_3x.png"
+					},
+					{
+						text: "布局",
+						iconPath: "/static/images/tabbar/layout_default_3x.png",
+						selectedIconPath: "/static/images/tabbar/layout_selected_3x.png"
+					},
+					{
+						text: "模板",
+						iconPath: "/static/images/tabbar/mod_default_3x.png",
+						selectedIconPath: "/static/images/tabbar/mod_selected_3x.png"
+					},
+					{
+						text: "我的",
+						iconPath: "/static/images/tabbar/my_default_3x.png",
+						selectedIconPath: "/static/images/tabbar/my_selected_3x.png"
+					}
+				],
+				height: 0,
+				texts: [
+					'Tabbar 标签栏，用于在不同功能模块之间进行切换，小图标建议尺寸84*84。',
+					'该使用方式在非Nvue端只适用于简单的页面，过于复杂的页面建议仅App-Nvue端使用。',
+					'非必要情况下建议使用原生tabbar。',
+					'由于Nvue端Android下内容超出会强制隐藏，所以App-Nvue暂不支持中间凸起图标，可使用原生tabbar配置。'
+				]
+			}
+		},
+		methods: {
+			init(e) {
+				//处理tabbar高度，避免内容被tabbar遮住
+				this.height = e.height
+			},
+			itemClick(e) {
+				console.log(e)
+				//这里可以做其他验证处理，比如登录等
+				//....
+				//验证通过执行以下逻辑
+				this.current = e.index
+				this.setTitle(e.index)
+			},
+			change(e) {
+				//禁止左右滑动
+				if (e.detail.source == 'touch') {
+					let index = e.target.current || e.detail.current;
+					this.current = index;
+					this.setTitle(index)
+				}
+			},
+			setTitle(index) {
+				uni.setNavigationBarTitle({
+					title: ['组件', '布局', '模板', '我的'][index]
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+	.fui-wrap {
+		/* #ifdef APP-NVUE */
+		flex: 1;
+		/* #endif */
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
+		box-sizing: border-box;
+		/* #endif */
+		
+		/* #ifdef H5 */
+		height: 100vh;
+		/* #endif */
+	}
+
+	.fui-swiper__wrap {
+		/* #ifdef APP-NVUE */
+		display: flex;
+		flex: 1;
+		/* #endif */
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	.fui-swiper__item {
+		/* #ifdef APP-NVUE */
+		flex: 1;
+		/* #endif */
+		flex-direction: row;
+	}
+
+	.fui-scroll__wrap {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		width: 750rpx;
+		flex: 1;
+		/* #endif */
+		/* #ifndef MP-ALIPAY */
+		flex-direction: column;
+		/* #endif */
+	}
+
+	.fui-tabbar__h {
+		width: 750rpx;
+	}
+
+	.fui-text {
+		font-size: 28rpx;
+		color: #B2B2B2;
+		padding: 32rpx;
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+	}
+</style>

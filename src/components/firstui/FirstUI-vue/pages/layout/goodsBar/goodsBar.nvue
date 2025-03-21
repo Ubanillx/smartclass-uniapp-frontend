@@ -1,0 +1,233 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">GoodsBar</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">商品导航栏，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<!-- 布局内容 start -->
+			<text class="fui-section__title">商品导航栏</text>
+			<view class="fui-goods__bar-wrap fui-goodsbar__flex">
+				<view class="fui-goods__bar-left fui-goodsbar__flex">
+					<view class="fui-goodsbar__item">
+						<fui-icon name="shop" :size="40"></fui-icon>
+						<text class="fui-goodsbar__text">店铺</text>
+					</view>
+					<view class="fui-goodsbar__item">
+						<fui-icon name="message" :size="40"></fui-icon>
+						<text class="fui-goodsbar__text">客服</text>
+					</view>
+					<view class="fui-goodsbar__item">
+						<fui-icon name="cart" :size="40"></fui-icon>
+						<text class="fui-goodsbar__text">购物车</text>
+					</view>
+				</view>
+				<view class="fui-goods__bar-right fui-goodsbar__flex">
+					<view class="fui-gb__btn-box">
+						<fui-button text="加入购物车" type="warning" height="72rpx" :size="28" radius="40rpx"></fui-button>
+					</view>
+					<view class="fui-gb__btn-box">
+						<fui-button text="立即购买" type="danger" height="72rpx" :size="28" radius="40rpx"></fui-button>
+					</view>
+				</view>
+			</view>
+
+			<text class="fui-section__title">商品导航栏</text>
+			<view class="fui-goods__bar-wrap fui-goodsbar__flex">
+				<view class="fui-goods__bar-left fui-goodsbar__flex">
+					<view class="fui-goodsbar__item">
+						<fui-icon name="message" :size="40"></fui-icon>
+						<text class="fui-goodsbar__text">客服</text>
+					</view>
+					<view class="fui-goodsbar__item">
+						<fui-icon name="cart" :size="40"></fui-icon>
+						<text class="fui-goodsbar__text">购物车</text>
+					</view>
+				</view>
+				<view class="fui-goods__bar-right fui-goodsbar__flex fui-gb__right-width">
+					<view class="fui-gb__btn-box">
+						<fui-button text="加入购物车" type="warning" height="72rpx" :size="28" radius="40rpx"></fui-button>
+					</view>
+					<view class="fui-gb__btn-box">
+						<fui-button text="立即购买" type="danger" height="72rpx" :size="28" radius="40rpx"></fui-button>
+					</view>
+				</view>
+			</view>
+
+			<view class="fui-goodsbar__fixed">
+				<view class="fui-goods__bar-wrap fui-goodsbar__flex">
+					<view class="fui-goods__bar-left fui-goodsbar__flex">
+						<view class="fui-goodsbar__item">
+							<fui-icon name="shop" :size="40" color="#FF2B2B"></fui-icon>
+							<text class="fui-goodsbar__text">店铺</text>
+						</view>
+						<view class="fui-goodsbar__item">
+							<fui-icon name="message" :size="40"></fui-icon>
+							<text class="fui-goodsbar__text">客服</text>
+						</view>
+						<view class="fui-goodsbar__item">
+							<view class="fui-gb__icon-box">
+								<fui-icon name="cart" :size="40"></fui-icon>
+								<!-- #ifndef APP-NVUE -->
+								<fui-badge absolute :value="2" type="danger" :scaleRatio="0.8"></fui-badge>
+								<!-- #endif -->
+							</view>
+							<text class="fui-goodsbar__text">购物车</text>
+							<!-- #ifdef APP-NVUE -->
+							<fui-badge absolute :value="2" type="danger" :scaleRatio="0.8" right="6rpx" top="0">
+							</fui-badge>
+							<!-- #endif -->
+						</view>
+					</view>
+					<view class="fui-goods__bar-right fui-goodsbar__flex">
+						<view class="fui-gb__btn-box">
+							<fui-button text="加入购物车" type="warning" height="72rpx" :size="28" radius="40rpx">
+							</fui-button>
+						</view>
+						<view class="fui-gb__btn-box">
+							<fui-button text="立即购买" type="danger" height="72rpx" :size="28" radius="40rpx"></fui-button>
+						</view>
+					</view>
+				</view>
+				<fui-safe-area></fui-safe-area>
+			</view>
+			<!-- 布局内容 end -->
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	/* 布局内容样式 start */
+
+	.fui-goods__bar-wrap {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		height: 100rpx;
+		background: #fff;
+	}
+
+
+	.fui-goodsbar__item {
+		height: 92rpx;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-shrink: 0;
+		/* #endif */
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		flex: 1;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
+		position: relative;
+	}
+
+	.fui-goodsbar__item:active {
+		opacity: .5;
+	}
+
+	.fui-goods__bar-left {
+		flex: 1;
+		padding: 0 12rpx;
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+	}
+
+	.fui-goodsbar__flex {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.fui-goodsbar__text {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		font-size: 26rpx;
+		/* line-height: 26rpx; */
+		transform: scale(.7);
+		transform-origin: center center;
+	}
+
+	.fui-goods__bar-right {
+		width: 450rpx;
+		/* #ifndef APP-NVUE */
+		flex-shrink: 0;
+		box-sizing: border-box;
+		/* #endif */
+		padding-right: 8rpx;
+	}
+
+	.fui-gb__right-width {
+		width: 520rpx;
+	}
+
+	.fui-gb__btn-box {
+		flex: 1;
+		/* #ifdef APP-NVUE */
+		flex-direction: row;
+		/* #endif */
+		padding-right: 12rpx;
+		/* #ifndef APP-NVUE */
+		display: block;
+		box-sizing: border-box;
+		/* #endif */
+	}
+	.fui-gb__icon-box{
+		position: relative;
+	}
+
+	.fui-goodsbar__fixed {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		/* #ifndef APP-NVUE */
+		z-index: 10;
+		/* #endif */
+	}
+
+	/* 布局内容样式 end */
+</style>

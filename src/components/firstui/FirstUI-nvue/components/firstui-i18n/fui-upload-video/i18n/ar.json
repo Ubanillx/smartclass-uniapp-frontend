@@ -1,0 +1,13 @@
+// 阿拉伯语
+{
+	"fui-upload-video.url": "يرجى تمرير عنوان واجهة الخادم",
+	"fui-upload-video.deltip": "Please wait until the upload is finished before deleting", // to be translated
+	"fui-upload-video.delete": "هل أنت متأكد من حذف هذا الفيديو؟",
+	"fui-upload-video.confirm": "موافق",
+	"fui-upload-video.loading": "Uploading",
+	"fui-upload-video.wait": "Waiting for upload",
+	"fui-upload-video.preupload": "Upload failed, click Re-upload",
+	"fui-upload-video.uploaded": "Uploaded", // to be translated
+	"fui-upload-video.extension": "Only _suffix_ format videos can be uploaded", // to be translated
+	"fui-upload-video.size": "The size of a single video cannot exceed _size_MB" // to be translated
+}

@@ -1,0 +1,5 @@
+// 英语
+{
+	"fui-data-tag.min": "Select at least _min_ option(s)",
+	"fui-data-tag.max": "Only _max_ option(s) can be selected at most"
+}

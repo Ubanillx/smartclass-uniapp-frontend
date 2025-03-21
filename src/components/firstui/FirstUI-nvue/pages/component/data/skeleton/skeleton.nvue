@@ -1,0 +1,156 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center fui-rect" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Skeleton"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc fui-rect">Skeleton 骨架屏，在需要等待加载内容的位置提供一个占位图形组合。</text>
+		</view>
+		<view class="fui-page__bd">
+			<!-- #ifndef APP-NVUE -->
+			<view class="fui-sk__box fui-rect">
+				<text class="fui-text">骨架节点</text>
+			</view>
+			<view class="fui-sk__wrap fui-round">
+				<text class="fui-text fui-white">骨架节点</text>
+			</view>
+			<view class="fui-section__title fui-rect">
+				<text class="fui-text">手动绘制骨架</text>
+			</view>
+			<!-- #endif -->
+			<!-- #ifdef APP-NVUE -->
+			<text class="fui-section__title fui-mtop--0">手动绘制骨架</text>
+			<!-- #endif -->
+
+			<view class="fui-outer">
+				<!--手动绘制数据，外层设置relative定位节点-->
+				<fui-skeleton outerClass="fui-outer" :preloadList="preloadList"></fui-skeleton>
+			</view>
+		</view>
+		<!--查找骨架节点 fui-rect、fui-round-->
+		<fui-skeleton @change="change" v-if="show" background="#F1F4FA" outerClass="fui-wrap"></fui-skeleton>
+	</view>
+</template>
+
+<script>
+	//注：nvue端暂不支持动态获取节点，仅支持手动绘制骨架，单位px可通过rpx转换传入使用
+	export default {
+		data() {
+			return {
+				//手动绘制数据，比较繁琐。可通过动态查找节点，然后通过change事件返回节点数据缓存使用
+				preloadList: [{
+					left: 15,
+					top: 10,
+					bottom: 220,
+					width: 40,
+					height: 40,
+					type: 'round'
+				}, {
+					left: 60,
+					right: 365,
+					top: 10,
+					bottom: 220,
+					width: 180,
+					height: 19,
+					type: 'rect'
+				}, {
+					left: 60,
+					right: 365,
+					top: 40,
+					bottom: 220,
+					width: 240,
+					height: 19,
+					type: 'rect'
+				}, {
+					left: 60,
+					right: 365,
+					top: 70,
+					bottom: 220,
+					width: 200,
+					height: 19,
+					type: 'rect'
+				}],
+				show: true
+			}
+		},
+		onReady() {
+			// #ifndef APP-NVUE
+			setTimeout(() => {
+				this.show = false
+			}, 2000)
+			// #endif
+
+			// #ifdef APP-NVUE
+			this.show = false
+			// #endif
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			change(e) {
+				//返回查找的骨架节点信息，可在开发环境中获取缓存到本地，然后直接用于生产环境
+				//nvue端暂不支持动态获取节点，可考虑缓存节点数据直接传入使用
+				console.log(e.nodes)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-section__title {
+		width: 300rpx;
+		margin-left: 32rpx;
+		/* #ifndef APP-NVUE */
+		white-space: nowrap;
+		/* #endif */
+	}
+
+	.fui-outer {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		height: 300rpx;
+		position: relative;
+	}
+
+	.fui-sk__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		height: 300rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		background-color: #fff;
+	}
+
+	.fui-sk__wrap {
+		background: #16AB60;
+		color: #fff;
+		width: 200rpx;
+		height: 200rpx;
+		/* #ifndef APP-NVUE */
+		border-radius: 50%;
+		display: flex;
+		/* #endif */
+
+		/* #ifdef APP-NVUE */
+		border-radius: 108rpx;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		/* #ifndef APP-NVUE */
+		margin: 40rpx auto;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		margin: 40rpx 30rpx;
+		/* #endif */
+	}
+
+	.fui-white {
+		color: #fff;
+	}
+</style>

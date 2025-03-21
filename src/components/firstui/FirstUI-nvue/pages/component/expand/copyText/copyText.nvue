@@ -1,0 +1,76 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="CopyText"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">CopyText 长按复制，用于复制关键文本信息，可扩展其他功能按钮。</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title fui-mtop--0">上方显示按钮</text>
+			<view class="fui-copy__box">
+				<fui-copy-text text="长按文本复制"></fui-copy-text>
+			</view>
+			<text class="fui-section__title">下方显示按钮</text>
+			<view class="fui-copy__box">
+				<fui-copy-text direction="bottom" text="长按文本复制" value="https://doc.firstui.cn" color="#465CFF"
+					size="30"></fui-copy-text>
+			</view>
+			<text class="fui-section__title">左侧显示按钮</text>
+			<view class="fui-copy__box">
+				<fui-copy-text direction="left" text="长按文本复制" value="https://doc.firstui.cn" color="#465CFF" size="30">
+				</fui-copy-text>
+			</view>
+			<text class="fui-section__title">右侧显示按钮</text>
+			<view class="fui-copy__box">
+				<fui-copy-text direction="right" text="长按文本复制" value="https://doc.firstui.cn" color="#465CFF" size="30">
+				</fui-copy-text>
+			</view>
+			<text class="fui-section__title">扩展按钮</text>
+			<view class="fui-copy__box">
+				<fui-copy-text text="长按文本复制" value="https://doc.firstui.cn" color="#FFB703" size="30"
+					:buttons="['回复','评论']" @click="btnClick"></fui-copy-text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			btnClick(e) {
+				console.log(e)
+				uni.fui.toast(`您点击了【${e.text}】按钮`)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+	}
+
+	.fui-copy__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+</style>

@@ -1,0 +1,202 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">ProductList</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">商品列表，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title">大图模式</text>
+			<!-- 大图模式 -->
+			<view class="fui-goods__list">
+				<view class="fui-goods__item" :class="{'fui-goods__item-card':true,'fui-gi__mr':index%2===0}"
+					v-for="(item,index) in productList" :key="index" @tap="handleClick">
+					<fui-lazyload radius="16rpx 16rpx 0 0" :width="345" :height="344" :src="item.src" mode="aspectFill">
+					</fui-lazyload>
+					<view class="fui-goods__item-content" :class="{'fui-card__padding':true}">
+						<view>
+							<fui-overflow-hidden :rows="2" :size="28" :text="item.title">
+							</fui-overflow-hidden>
+							<view class="fui-goods__item-attr">
+								<fui-tag :text="item.tag" :padding="['4rpx','4rpx']" background="rgba(255, 43, 43, .05)"
+									color="#FF2B2B" borderColor="transparent"></fui-tag>
+							</view>
+						</view>
+						<view>
+							<view class="fui-goods__item-price">
+								<fui-text text="￥" font-weight="500" :size="22" color="#FF2B2B"></fui-text>
+								<fui-text lineHeight font-weight="500" :text="getPrice(item.price,1)" :size="34"
+									color="#FF2B2B">
+								</fui-text>
+								<fui-text font-weight="500" :text="getPrice(item.price,2)" :size="24" color="#FF2B2B">
+								</fui-text>
+							</view>
+							<fui-text :padding="['4rpx','0','0']" :text="`${item.evaluate}条评价`" :size="24" color="#7F7F7F"></fui-text>
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<text class="fui-section__title">列表模式</text>
+			<!-- 列表模式-->
+			<view class="fui-goods__list">
+				<view class="fui-goods__item" :class="{'fui-goods__item-list':true,'fui-goods__hover':true}"
+					v-for="(item,index) in productList" :key="index" @tap="handleClick">
+					<fui-lazyload radius="16" :width="252" :height="252" :src="item.src" mode="aspectFill">
+					</fui-lazyload>
+					<view class="fui-goods__item-content" :class="{'fui-list__padding':true}">
+						<view class="fui-goods__item-top">
+							<fui-overflow-hidden :rows="2" :size="28" :text="item.title">
+							</fui-overflow-hidden>
+							<view class="fui-goods__item-attr">
+								<fui-tag :text="item.tag" :padding="['4rpx','4rpx']" background="rgba(255, 43, 43, .05)"
+									color="#FF2B2B" borderColor="transparent"></fui-tag>
+							</view>
+						</view>
+						<view>
+							<view class="fui-goods__item-price">
+								<fui-text font-weight="500" text="￥" :size="22" color="#FF2B2B"></fui-text>
+								<fui-text font-weight="500" lineHeight :text="getPrice(item.price,1)" :size="34" color="#FF2B2B">
+								</fui-text>
+								<fui-text font-weight="500" :text="getPrice(item.price,2)" :size="24" color="#FF2B2B"></fui-text>
+							</view>
+							<fui-text :padding="['4rpx','0','0']" :text="`${item.evaluate}条评价`" :size="24" color="#7F7F7F"></fui-text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import dataList from './index.js'
+	export default {
+		data() {
+			return {
+				productList: dataList
+			}
+		},
+		methods: {
+			getPrice(price, type) {
+				if (!price) return ''
+				const arr = price.split('.')
+				return type === 1 ? arr[0] : `.${arr[1]}`
+			},
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			},
+			handleClick() {
+				uni.fui.toast('点击了~')
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	/* ============================ */
+	/* 商品列表 css */
+	.fui-goods__list {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		overflow: hidden;
+		/* #endif */
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.fui-goods__item {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		background-color: #fff;
+	}
+
+	.fui-goods__hover:active {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.fui-goods__item-card {
+		width: 344rpx;
+		flex-direction: column;
+		margin-bottom: 16rpx;
+		border-radius: 16rpx;
+		overflow: hidden;
+		/* #ifndef APP-NVUE */
+		transform: translateY(0);
+		/* #endif */
+	}
+
+	.fui-goods__item-list {
+		flex: 1;
+		/* #ifndef APP-NVUE  */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 12rpx 24rpx;
+		flex-direction: row;
+	}
+
+	.fui-gi__mr {
+		margin-right: 16rpx;
+	}
+
+	.fui-goods__item-content {
+		height: 252rpx;
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.fui-goods__item-top {
+		width: 426rpx;
+	}
+
+	.fui-card__padding {
+		padding: 20rpx;
+	}
+
+	.fui-list__padding {
+		padding: 12rpx 0 12rpx 24rpx;
+	}
+
+	.fui-goods__item-price {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: flex-end;
+	}
+
+	.fui-goods__item-attr {
+		flex-direction: row;
+		padding-top: 8rpx;
+	}
+</style>

@@ -1,0 +1,13 @@
+// 法语
+{
+	"fui-upload.url": "Veuillez transmettre l'adresse de l'interface du serveur",
+	"fui-upload.deltip": "Please wait until the upload is finished before deleting", // to be translated
+	"fui-upload.delete": "Etes-vous sûr de supprimer cette image ?",
+	"fui-upload.confirm": "OK",
+	"fui-upload.loading": "Loading",
+	"fui-upload.preupload": "Réuploader",
+	"fui-upload.uploading": "Uploading", // to be translated
+	"fui-upload.max": "Vous pouvez télécharger jusqu'à _max_ image(s)",
+	"fui-upload.suffix": "Seules les images au format _suffix_ peuvent être téléchargées",
+	"fui-upload.size": "La taille d'une seule image ne peut pas dépasser _size_ Mo"
+}

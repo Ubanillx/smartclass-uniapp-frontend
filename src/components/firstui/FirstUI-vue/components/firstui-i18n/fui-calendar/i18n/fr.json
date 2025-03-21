@@ -1,0 +1,9 @@
+// 法语 此处暂时统一显示英文
+{
+	"fui-calendar.ok": "OK",
+	"fui-calendar.start": "Start",
+	"fui-calendar.end": "End",
+	"fui-calendar.outofrange": "The date is out of the switchable range",
+	"fui-calendar.max": "You can select up to max days, which is currently out of the selectable range.",
+	"fui-calendar.maxdays": "You can select up to maxdays days"
+}

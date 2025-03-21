@@ -1,0 +1,96 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-logo__box">
+			<image src="/static/images/common/img_logo.png" class="fui-logo" mode="widthFix"></image>
+			<text class="fui-title">First UI</text>
+			<text class="fui-version">Version {{version}}</text>
+		</view>
+
+		<view class="fui-page__bd">
+			<view>
+				<text class="fui-desc">First UI 是一套基于uni-app开发的组件化、可复用、易扩展、低耦合的跨平台移动端UI 组件库。</text> 
+			</view>
+			<fui-list-cell topBorder arrow @click="getLink">
+				<text class="fui-menu__text">去STAR</text>
+			</fui-list-cell>
+			<fui-list-cell arrow @click="href('/pages/my/updated/updated')">
+				<text class="fui-menu__text">功能介绍</text>
+			</fui-list-cell>
+			<fui-list-cell bottomLeft="0" arrow @click="href('/pages/my/vip/vip')">
+				<text class="fui-menu__text">会员介绍 </text>
+			</fui-list-cell>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState
+	} from 'vuex'
+	import $fui from '@/components/firstui/fui-clipboard';
+	export default {
+		computed: mapState(['version']),
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			getLink(e) {
+				$fui.getClipboardData('https://github.com/FirstUI/FirstUI', res => {
+					uni.fui.toast('GitHub地址复制成功');
+				}, e);
+			},
+			href(page) {
+				uni.fui.toast('点击~');
+				// uni.fui.href(page)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-logo__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		padding-top: 64rpx;
+		padding-bottom: 64rpx;
+	}
+
+	.fui-logo {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 24rpx;
+	}
+
+	.fui-title {
+		font-size: 36rpx;
+		padding-top: 24rpx;
+	}
+
+	.fui-version {
+		padding-top: 8rpx;
+		font-size: 24rpx;
+		font-weight: 400;
+	}
+
+	.fui-desc {
+		font-size: 28rpx;
+		line-height: 56rpx;
+		padding: 0 32rpx;
+		margin-bottom: 64rpx;
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+		font-weight: 400;
+	}
+
+	.fui-menu__text{
+		font-size: 28rpx; 
+	}
+</style>

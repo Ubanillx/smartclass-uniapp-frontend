@@ -1,0 +1,7 @@
+// 中文简体
+{
+	"fui-slider-captcha.title": "安全验证",
+	"fui-slider-captcha.tip": "拖动下方滑块完成拼图",
+	"fui-slider-captcha.resource": "图片资源处理失败",
+	"fui-slider-captcha.support": "暂不支持base64格式图片"
+}

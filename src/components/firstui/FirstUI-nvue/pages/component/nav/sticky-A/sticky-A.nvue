@@ -1,0 +1,115 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text text="Sticky" font-weight="600" size="36"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Sticky 吸顶容器，用于将标题栏在滚动时固定到页面顶部。</text>
+		</view>
+		<text class="fui-section__title fui-mtop--0">放置根目录下</text>
+		<fui-sticky :zIndex="1001" :scrollTop="scrollTop">
+			<text class="fui-header">滑动页面查看效果</text>
+		</fui-sticky>
+		<text class="fui-seat__wrap">温馨提示：组件父元素不能使用overflow:hidden或者overflow:auto属性，且父元素的高度不能低于sticky元素的高度</text>
+		<!-- nvue端页面内容超出一屏，scro-view 滚动失效 如需测试需将最底部 view注释掉-->
+		<!-- #ifndef APP-NVUE -->
+		<text class="fui-section__title">放置scroll-view内</text>
+		<scroll-view :scroll-y="true" class="fui-scroll__view">
+			<view style="height: 800px;position: relative;">
+				<text class="fui-seat__wrap"
+					style="height: 70px;">温馨提示：组件父元素不能使用overflow:hidden或者overflow:auto属性，且父元素的高度不能低于sticky元素的高度</text>
+				<!--scroll-view 内组件不需要传值 scrollTop -->
+				<fui-sticky>
+					<text class="fui-header">滑动scroll-view查看效果</text>
+				</fui-sticky>
+				<text class="fui-seat__wrap"
+					style="height: 40px;">注意：sticky组件如果放在scroll-view根目录下，当到scroll-view元素的底部时sticky效果会失效。</text>
+				<text
+					class="fui-seat__wrap">解决办法：如当scroll-view的高度为200px，但是scrollHeight为800px，在scroll-view中嵌套一个view就能顺利定位。</text>
+				<text class="fui-footer">到达底部</text>
+			</view>
+		</scroll-view>
+		<!-- #endif -->
+		<view style="height: 800px;"></view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				scrollTop: 0
+			}
+		},
+		// #ifdef MP-QQ || MP-TOUTIAO || MP-BAIDU
+		onPageScroll(e) {
+			// console.log(e)
+			this.scrollTop = e.scrollTop
+		},
+		// #endif
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		margin-top: 48rpx;
+	}
+
+	.fui-header {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 24rpx;
+		justify-content: center;
+		background: #F8F8F8;
+		color: #465CFF;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.fui-seat__wrap,
+	.fui-footer {
+		height: 60px;
+		font-size: 24rpx;
+		color: #B2B2B2;
+		padding: 32rpx;
+		/* #ifndef APP-NVUE */
+		box-sizing: border-box;
+		/* #endif */
+		text-align: center;
+	}
+
+	.fui-seat__wrap {
+		text-align: left;
+	}
+
+	.fui-footer {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+
+	.fui-scroll__view {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		height: 200px;
+		background: #fff;
+	}
+</style>

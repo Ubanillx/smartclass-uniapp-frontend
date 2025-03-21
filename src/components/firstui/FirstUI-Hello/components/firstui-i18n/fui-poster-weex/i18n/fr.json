@@ -1,0 +1,9 @@
+// 法语
+{
+	"fui-poster-weex.error": "Échec du traitement des ressources d'image",
+	"fui-poster-weex.sok": "Image enregistrée avec succès",
+	"fui-poster-weex.serror": "L'enregistrement de l'image a échoué",
+	"fui-poster-weex.message": "Message",
+	"fui-poster-weex.content": "Vous n'avez pas encore activé l'autorisation de l'album photo. Souhaitez-vous la configurer maintenant ?",
+	"fui-poster-weex.confirm": "OK"
+}

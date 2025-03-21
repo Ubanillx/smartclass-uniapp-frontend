@@ -1,0 +1,9 @@
+// 中文简体
+{
+	"fui-poster-weex.error": "图片资源处理失败",
+	"fui-poster-weex.sok": "图片保存成功",
+	"fui-poster-weex.serror": "图片保存失败",
+	"fui-poster-weex.message": "提示",
+	"fui-poster-weex.content": "您还没有开启相册权限，是否立即设置？",
+	"fui-poster-weex.confirm": "确定"
+}

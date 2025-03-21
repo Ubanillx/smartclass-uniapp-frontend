@@ -1,0 +1,6 @@
+// 法语
+{
+	"fui-countdown-verify.text": "Obtenir des SMS",
+	"fui-countdown-verify.sending": "Envoi en cours",
+	"fui-countdown-verify.sent": "s" //Resend after 
+}

@@ -1,0 +1,13 @@
+// 法语
+{
+	"fui-upload-video.url": "Veuillez transmettre l'adresse de l'interface du serveur",
+	"fui-upload-video.deltip": "Please wait until the upload is finished before deleting",// to be translated
+	"fui-upload-video.delete": "Êtes-vous sûr de supprimer cette vidéo ?",
+	"fui-upload-video.confirm": "OK",
+	"fui-upload-video.loading": "Uploading",
+	"fui-upload-video.wait": "Waiting for upload",
+	"fui-upload-video.preupload": "Upload failed, click Re-upload",// to be translated
+	"fui-upload-video.uploaded": "Uploaded",
+	"fui-upload-video.extension": "Seules les vidéos au format _suffix_ peuvent être mises en ligne",
+	"fui-upload-video.size": "La taille d'une seule vidéo ne peut pas dépasser _size_MB"
+}

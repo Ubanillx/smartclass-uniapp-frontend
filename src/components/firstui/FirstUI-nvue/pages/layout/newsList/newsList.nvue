@@ -1,0 +1,122 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">NewsList</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">新闻列表，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title">标题列表</text>
+			<view class="fui-news__list">
+				<view class="fui-news__item" v-for="(item,index) in newsList" :key="index">
+					<fui-overflow-hidden :text="item.title" :size="36" :rows="1"></fui-overflow-hidden>
+					<view class="fui-news__info">
+						<fui-text v-if="item.isTop" :padding="['0','20rpx','0','0']" text="置顶" :size="25"
+							color="#FF2B2B"></fui-text>
+						<fui-text :padding="['0','20rpx','0','0']" :text="item.source" :size="25" color="#7F7F7F">
+						</fui-text>
+						<fui-text :text="`${item.comment}评论`" :size="25" color="#7F7F7F"></fui-text>
+					</view>
+				</view>
+			</view>
+
+			<text class="fui-section__title">带图片列表</text>
+			<view class="fui-news__list">
+				<fui-list :topBorder="false" bottomBorder bottomLeft="32" bottomRight="32"
+					v-for="(item,index) in newsList" :key="index">
+					<view class="fui-news__item">
+						<fui-overflow-hidden :text="item.title" :size="36" :rows="3"></fui-overflow-hidden>
+						<view class="fui-image__list" v-if="item.imageList && item.imageList.length">
+							<fui-lazyload :src="src" v-for="(src,idx) in item.imageList" :key="idx"
+								:width="item.imageList.length>1?200:400" :height="item.imageList.length>1?200:0"
+								marginRight="20" mode="aspectFill"></fui-lazyload>
+						</view>
+						<view class="fui-news__info">
+							<fui-text v-if="item.isTop" :padding="['0','20rpx','0','0']" text="置顶" :size="25"
+								color="#FF2B2B"></fui-text>
+							<fui-text :padding="['0','20rpx','0','0']" :text="item.source" :size="25" color="#7F7F7F">
+							</fui-text>
+							<fui-text :text="`${item.comment}评论`" :size="25" color="#7F7F7F"></fui-text>
+						</view>
+					</view>
+				</fui-list>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import newsList from './index.js'
+	export default {
+		data() {
+			return {
+				newsList
+			}
+		},
+		methods: {
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	/*
+	  新闻列表 css
+	*/
+
+	.fui-news__item {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 20rpx 32rpx;
+		background-color: #fff;
+	}
+
+	.fui-news__item:active {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.fui-image__list {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		flex-wrap: wrap;
+		padding-top: 20rpx;
+		padding-bottom: 16rpx;
+	}
+
+	.fui-news__info {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		transform: scale(0.8);
+		transform-origin: 0 100%;
+	}
+</style>

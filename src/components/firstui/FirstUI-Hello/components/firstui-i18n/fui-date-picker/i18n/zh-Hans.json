@@ -1,0 +1,10 @@
+// 中文简体
+{
+	"fui-date-picker.start": "起始日期",
+	"fui-date-picker.end": "结束日期",
+	"fui-date-picker.confirm": "确定",
+	"fui-date-picker.cancel": "取消",
+	"fui-date-picker.error": "默认日期时间格式有误",
+	"fui-date-picker.select": "请选择_date_",
+	"fui-date-picker.range": "请选择正确的区间"
+}

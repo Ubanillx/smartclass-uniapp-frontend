@@ -1,0 +1,9 @@
+// 繁体
+{
+	"fui-poster-weex.error": "圖片資源處理失敗",
+	"fui-poster-weex.sok": "圖片保存成功",
+	"fui-poster-weex.serror": "圖片保存失敗",
+	"fui-poster-weex.message": "提示",
+	"fui-poster-weex.content": "您還沒有開啟相冊權限，是否立即設置？",
+	"fui-poster-weex.confirm": "確定"
+}

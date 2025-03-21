@@ -1,0 +1,9 @@
+// 英语
+{
+	"fui-poster-weex.error": "Image resource processing failed",
+	"fui-poster-weex.sok": "Image saved successfully",
+	"fui-poster-weex.serror": "Image saving failed",
+	"fui-poster-weex.message": "Message",
+	"fui-poster-weex.content": "You haven't enabled the photo album permission yet. Do you want to set it up now?",
+	"fui-poster-weex.confirm": "OK"
+}

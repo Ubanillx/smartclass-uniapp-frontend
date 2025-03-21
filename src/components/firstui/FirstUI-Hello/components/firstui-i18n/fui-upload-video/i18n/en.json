@@ -1,0 +1,13 @@
+// 英语
+{
+	"fui-upload-video.url": "Please pass in the server interface address",
+	"fui-upload-video.deltip": "Please wait until the upload is finished before deleting",
+	"fui-upload-video.delete": "Are you sure to delete this video?",
+	"fui-upload-video.confirm": "OK",
+	"fui-upload-video.loading": "Uploading",
+	"fui-upload-video.wait": "Waiting for upload",
+	"fui-upload-video.preupload": "Upload failed, click Re-upload",
+	"fui-upload-video.uploaded": "Uploaded",
+	"fui-upload-video.extension": "Only _suffix_ format videos can be uploaded",
+	"fui-upload-video.size": "The size of a single video cannot exceed _size_MB"
+}

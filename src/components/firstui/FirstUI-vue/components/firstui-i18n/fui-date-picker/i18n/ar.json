@@ -1,0 +1,10 @@
+// 阿拉伯语
+{
+	"fui-date-picker.start": "تاريخ البدء",
+	"fui-date-picker.end": "تاريخ الانتهاء",
+	"fui-date-picker.confirm": "موافق",
+	"fui-date-picker.cancel": "إلغاء",
+	"fui-date-picker.error": "تنسيق التاريخ والوقت الافتراضي غير صحيح",
+	"fui-date-picker.select": "اختر من فضلك",
+	"fui-date-picker.range": "الرجاء تحديد النطاق الصحيح"
+}

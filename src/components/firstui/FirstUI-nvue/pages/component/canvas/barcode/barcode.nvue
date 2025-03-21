@@ -1,0 +1,87 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Barcode"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Barcode 条形码，用于展现条形码信息。</text>
+		</view>
+		<view class="fui-page__bd">
+			<view class="fui-input__box">
+				<fui-input v-model="val" maxlength="13" type="number"></fui-input>
+				<text class="fui-tips">请输入13位条码信息，扫描只能识别有效的条形码。</text>
+			</view>
+			<fui-button type="gray" btn-size="medium" text="生成" bold :margin="['32rpx','0','64rpx']" @click="barcode">
+			</fui-button>
+			<fui-barcode ref="barcode" :value="val"></fui-barcode>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				val: '6937147252044'
+			}
+		},
+		onReady() {
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					this.barcode()
+				}, 300)
+			})
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			barcode() {
+				//输入框如果type=number 则返回的是Number类型值
+				if (String(this.val).length === 13) {
+					this.$refs.barcode.draw()
+				} else {
+					uni.fui.toast('请输入13位条形码！')
+				}
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	.fui-page__bd {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+
+	.fui-input__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		width: 750rpx;
+		/* #endif */
+	}
+
+
+	.fui-tips {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		font-size: 24rpx;
+		color: #7F7F7F;
+		font-weight: 400;
+		padding: 24rpx;
+	}
+</style>

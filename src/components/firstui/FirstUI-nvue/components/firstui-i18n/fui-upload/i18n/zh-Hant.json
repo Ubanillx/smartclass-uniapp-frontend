@@ -1,0 +1,13 @@
+// 繁体
+{
+	"fui-upload.url": "請傳入服務器接口地址",
+	"fui-upload.deltip": "請等待上傳結束再進行刪除",
+	"fui-upload.delete": "確定將該圖片刪除嗎？",
+	"fui-upload.confirm": "確定",
+	"fui-upload.loading": "請稍候...",
+	"fui-upload.preupload": "重新上傳",
+	"fui-upload.uploading": "正在上傳...",
+	"fui-upload.max": "最多可上傳max張圖片",
+	"fui-upload.suffix": "只能上傳suffix格式圖片",
+	"fui-upload.size": "單張圖片大小不能超過：sizeMB"
+}

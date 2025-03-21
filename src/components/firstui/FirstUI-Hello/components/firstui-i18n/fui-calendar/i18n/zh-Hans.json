@@ -1,0 +1,9 @@
+// 中文简体，页面其他元素 请根据 language 属性切换
+{
+	"fui-calendar.ok": "确定",
+	"fui-calendar.start": "开始",
+	"fui-calendar.end": "结束",
+	"fui-calendar.outofrange": "日期已超出可切换范围",
+	"fui-calendar.max": "最多可选max天，当前已超出可选范围",
+	"fui-calendar.maxdays": "最多可选maxdays天"
+}

@@ -1,0 +1,9 @@
+// 阿拉伯语
+{
+	"fui-poster-weex.error": "فشلت معالجة موارد الصورة",
+	"fui-poster-weex.sok": "حفظت الصورة بنجاح",
+	"fui-poster-weex.serror": "فشل حفظ الصورة",
+	"fui-poster-weex.message": "الرسالة",
+	"fui-poster-weex.content": "لم تقم بتمكين إذن ألبوم الصور بعد، هل ترغب في إعداده الآن؟",
+	"fui-poster-weex.confirm": "موافق"
+}

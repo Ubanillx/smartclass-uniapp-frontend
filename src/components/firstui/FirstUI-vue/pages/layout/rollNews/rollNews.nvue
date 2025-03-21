@@ -1,0 +1,162 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">RollNews</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">滚动消息，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd fui-page__spacing">
+			<text class="fui-section__title">搜索栏</text>
+			<!-- 布局内容 start -->
+			<view class="fui-roll__news">
+				<fui-icon name="search" :size="36"></fui-icon>
+				<swiper vertical autoplay circular interval="3000" class="fui-rn__swiper">
+					<swiper-item v-for="(item,index) in searchList" :key="index" class="fui-rn__item">
+						<text class="fui-rn__news-text">{{item}}</text>
+					</swiper-item>
+				</swiper>
+			</view>
+
+			<text class="fui-section__title">搜索栏</text>
+			<view class="fui-roll__news fui-rn__circle">
+				<fui-icon name="search" :size="36" color="#fff"></fui-icon>
+				<swiper vertical autoplay circular interval="3000" class="fui-rn__swiper">
+					<swiper-item v-for="(item,index) in searchList" :key="index" class="fui-rn__item">
+						<text class="fui-rn__news-text fui-rn__color-white">{{item}}</text>
+					</swiper-item>
+				</swiper>
+				<fui-icon name="scan" :size="44" color="#fff"></fui-icon>
+			</view>
+
+			<text class="fui-section__title">消息栏</text>
+			<view class="fui-roll__news">
+				<fui-icon name="notice" :size="36" color="#FFB703"></fui-icon>
+				<swiper vertical autoplay circular interval="3000" class="fui-rn__swiper">
+					<swiper-item v-for="(item,index) in searchList" :key="index" class="fui-rn__item">
+						<text class="fui-rn__news-text">{{item}}</text>
+					</swiper-item>
+				</swiper>
+			</view>
+			<!-- 布局内容 end -->
+		</view>
+		<view class="fui-btn__box">
+			<fui-button type="gray" btn-size="medium" text="More" bold :margin="['24rpx']" @click="href">
+			</fui-button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				searchList: [
+					'持续巩固拓展脱贫攻坚成果',
+					'大宗商品未来走势如何?',
+					'13万级混动SUV皓极预售火爆，4小时订单超700000000'
+				]
+			}
+		},
+		methods: {
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			},
+			href() {
+				const url = "/pages/component/nav/noticeBar/noticeBar"
+				uni.fui.href(url)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	.fui-btn__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	/* 布局内容样式 start */
+	.fui-roll__news {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		background: #fff;
+		border-radius: 16rpx;
+		padding: 0 20rpx;
+	}
+
+	.fui-rn__swiper {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		flex: 1;
+		height: 80rpx;
+	}
+
+	.fui-rn__item {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		height: 80rpx;
+		overflow: hidden;
+	}
+
+	.fui-rn__news-text {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: block;
+		white-space: nowrap;
+		box-sizing: border-box;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		lines: 1;
+		/* #endif */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 80rpx;
+		line-height: 80rpx;
+		padding-left: 20rpx;
+		font-size: 30rpx;
+		color: #333333;
+		/* opacity: .6; */
+	}
+
+	.fui-rn__circle {
+		border-radius: 44rpx;
+		padding: 0 30rpx;
+		background: rgba(0, 0, 0, .4);
+	}
+
+	.fui-rn__color-white {
+		color: #fff
+	}
+
+	/* 布局内容样式 end */
+</style>

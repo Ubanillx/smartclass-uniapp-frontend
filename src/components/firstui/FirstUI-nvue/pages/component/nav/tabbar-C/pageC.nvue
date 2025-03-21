@@ -1,0 +1,57 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-header">
+			<text class="fui-title__text">PageC：模板</text>
+			<text class="fui-desc__text">由于Nvue端Android下内容超出会强制隐藏，所以App-Nvue暂不支持中间凸起图标，可使用原生tabbar配置。</text>
+		</view>
+		<view class="fui-body">
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		name: "pageC",
+		data() {
+			return {
+
+			};
+		}
+	}
+</script>
+
+<style>
+	.fui-header {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 52rpx 32rpx;
+	}
+
+	.fui-body {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		padding-bottom: 64rpx;
+	}
+
+
+	.fui-title__text {
+		text-align: left;
+		font-size: 36rpx;
+		font-weight: 600;
+	}
+
+	.fui-desc__text {
+		margin-top: 8rpx;
+		color: #B2B2B2;
+		text-align: left;
+		font-size: 28rpx;
+		font-weight: 400;
+		/* #ifndef APP-NVUE */
+		word-break: break-all;
+		/* #endif */
+	}
+</style>

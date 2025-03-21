@@ -1,0 +1,265 @@
+<template>
+	<view class="fui-wrap">
+		<map class="fui-map" :latitude="latitude" :longitude="longitude" :scale="15" show-location enable-rotate
+			:style="{height:mapHeight+'px'}" :polyline="polyline" :markers="markers" :circles="circles">
+			<!-- #ifndef MP-ALIPAY || H5 || MP-BAIDU -->
+			<cover-image class="fui-icon__back" src="/static/images/layout/icon_back_3x.png" @tap.stop="back" />
+			<!-- #endif -->
+		</map>
+		<view class="fui-content__box">
+			<view class="fui-content__inner">
+				<view class="fui-content__title">
+					<fui-text text="预计" size="36" fontWeight="500"></fui-text>
+					<fui-text :text="`${time}分钟后`" size="36" fontWeight="500" color="#465CFF"></fui-text>
+					<fui-text text="送达" size="36" fontWeight="500"></fui-text>
+				</view>
+				<fui-text :text="`距你还有${distance}，由FirstUI专送配送`" size="24" color="#7F7F7F"
+					:padding="['12rpx',0,'24rpx']">
+				</fui-text>
+				<fui-list>
+					<view class="fui-tel__box">
+						<view class="fui-tel__item">
+							<fui-lazyload src="/static/images/layout/icon_tel_3x.png" background="transparent"
+								width="26" height="26"></fui-lazyload>
+							<fui-text text="联系商家" size="26" :padding="[0,0,0,'16rpx']"></fui-text>
+						</view>
+						<view class="fui-tel__item">
+							<fui-lazyload block src="/static/images/layout/icon_tel_3x.png" background="transparent"
+								width="26" height="26"></fui-lazyload>
+							<fui-text text="联系骑手" size="26" :padding="[0,0,0,'16rpx']"></fui-text>
+						</view>
+					</view>
+				</fui-list>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	//需要自行申请key：https://lbs.qq.com
+	//小程序平台引入sdk请在后台添加request域名 https://apis.map.qq.com
+	//H5端使用，需添加域名白名单
+	import QQMapWX from '@/libs/qqmap-wx-jssdk.min.js'
+	const key = 'I4OBZ-YWVWU-MENVE-4Z3TZ-GEAJT-IWBX3';
+	const map = new QQMapWX({
+		key
+	});
+	export default {
+		data() {
+			return {
+				latitude: 22.616917615026814,
+				longitude: 114.02557368550984,
+				mapHeight: 0,
+				markers: [{
+					iconPath: "/static/images/layout/img_rider_3x.png",
+					id: 1,
+					latitude: 22.611359108097293,
+					longitude: 114.03014980402233,
+					width: 48,
+					height: 48
+				}],
+				circles: [{
+					latitude: 22.616917615026814,
+					longitude: 114.02557368550984,
+					color: '#00AE8F11',
+					fillColor: '#00AE8F30',
+					radius: 200
+
+				}, {
+					latitude: 22.616917615026814,
+					longitude: 114.02557368550984,
+					color: '#FFFFFF',
+					fillColor: '#FFFFFF',
+					radius: 60
+				}, {
+					latitude: 22.616917615026814,
+					longitude: 114.02557368550984,
+					color: '#00AE8F',
+					fillColor: '#00AE8F',
+					radius: 24
+				}],
+				polyline: [],
+				distance: 0,
+				time: 0
+			}
+		},
+		onLoad() {
+			const sys = uni.getSystemInfoSync()
+			this.mapHeight = sys.windowHeight - uni.upx2px(300)
+		},
+		onReady() {
+			setTimeout(() => {
+				this.getPolyline()
+			}, 50)
+		},
+		methods: {
+			// #ifdef H5
+			jsonp: function(url, callback, callbackname) {
+				window[callbackname] = callback;
+				let script = document.createElement("script");
+				script.src = url;
+				script.type = "text/javascript";
+				document.head.appendChild(script);
+				document.head.removeChild(script);
+			},
+			// #endif
+			getDirection(routes) {
+				let coors = routes.polyline,
+					pl = [];
+				//坐标解压（返回的点串坐标，通过前向差分进行压缩）
+				let kr = 1000000;
+				for (var i = 2; i < coors.length; i++) {
+					coors[i] = Number(coors[i - 2]) + Number(coors[i]) / kr;
+				}
+				//将解压后的坐标放入点串数组pl中
+				for (var i = 0; i < coors.length; i += 2) {
+					pl.push({
+						latitude: coors[i],
+						longitude: coors[i + 1]
+					})
+				}
+				//设置polyline属性，将路线显示出来,将解压坐标第一个数据作为起点
+				this.markers[0].latitude = pl[0].latitude
+				this.markers[0].longitude = pl[0].longitude
+				this.polyline = [{
+					points: pl,
+					color: '#00AE8F',
+					width: 4
+				}]
+				//距离
+				this.distance = routes.distance<1000?`${routes.distance}m`:`${(routes.distance/1000).toFixed(1)}km`;
+				//时间分钟
+				this.time = routes.duration;
+			},
+			getPolyline() {
+				/*
+				uni.getLocation({
+					// #ifdef APP-PLUS || MP
+					type: 'gcj02',
+					// #endif
+					// altitude: true,
+					success: (res) => {
+						// this.longitude = res.longitude;
+						// this.latitude = res.latitude;
+					},
+					fail(err) {
+						console.log(err)
+					}
+				})
+				*/
+				
+				// 骑手位置，可从后端获取，或上一页面传入
+				const from = {
+					latitude: this.markers[0].latitude,
+					longitude: this.markers[0].longitude
+				}
+				//我的位置，正式环境使用上方注释代码获取当前位置
+				const to = {
+					// latitude: res.latitude,
+					// longitude: res.longitude
+					latitude: this.circles[0].latitude,
+					longitude: this.circles[0].longitude
+				}
+				// #ifndef H5
+				map.direction({
+					//可选值：'driving'（驾车）、'walking'（步行）、'bicycling'（骑行）
+					mode: 'bicycling',
+					from: from,
+					to: to,
+					success: (res) => {
+						console.log(res);
+						if (res.result && res.result.routes && res.result.routes[0]) {
+							this.getDirection(res.result.routes[0])
+						}
+					},
+					fail: (error) => {
+						console.error(error);
+					}
+				})
+				// #endif
+				
+				// #ifdef H5
+				const link =
+					`https://apis.map.qq.com/ws/direction/v1/bicycling?output=jsonp&key=${key}&to=${to.latitude},${to.longitude}&from=${from.latitude},${from.longitude}`;
+				this.jsonp(link,
+					res => {
+						if (res.result && res.result.routes && res.result.routes[0]) {
+							this.getDirection(res.result.routes[0])
+						}
+					},
+					'QQmap');
+				// #endif
+
+				//===================
+			},
+			back(){
+				uni.navigateBack()
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-map {
+		width: 750rpx;
+		height: 600rpx;
+	}
+
+	.fui-icon__back {
+		width: 60rpx;
+		height: 60rpx;
+		position: fixed;
+		top: 72rpx;
+		left: 30rpx;
+	}
+
+	.fui-content__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 24rpx 32rpx;
+	}
+
+	.fui-content__inner {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		background-color: #fff;
+		padding: 24rpx 24rpx 0;
+		border-radius: 16rpx;
+		height: 232rpx;
+	}
+
+	.fui-content__title {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: row;
+	}
+
+	.fui-tel__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: row;
+	}
+
+	.fui-tel__item {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		padding-right: 48rpx;
+		height: 96rpx;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
+	}
+</style>

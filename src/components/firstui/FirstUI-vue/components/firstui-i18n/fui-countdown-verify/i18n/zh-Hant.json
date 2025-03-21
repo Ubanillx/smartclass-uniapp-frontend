@@ -1,0 +1,6 @@
+// 繁体
+{
+	"fui-countdown-verify.text": "發送驗證碼",
+	"fui-countdown-verify.sending": "正在發送...",
+	"fui-countdown-verify.sent": "s後重新獲取"
+}

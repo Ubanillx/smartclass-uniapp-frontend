@@ -1,0 +1,87 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="SearchBar"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">SearchBar 搜索栏，主要用于内容搜索，跳转展示等。</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title fui-mtop--0">基本使用</text>
+			<fui-search-bar @search="search"></fui-search-bar>
+			<text class="fui-section__title">调整样式</text>
+			<fui-search-bar background="#ededed" radius="36" searchColor="#FFB703" @search="search"></fui-search-bar>
+			<text class="fui-section__title">插槽使用/返回箭头/不显示占位</text>
+			<fui-search-bar background="#fff" radius="36" inputBackground="#fafafa" @search="search">
+				<view class="fui-arrow__left" @tap.stop="back">
+					<fui-icon name="arrowleft" size="56"></fui-icon>
+				</view>
+			</fui-search-bar>
+			<text class="fui-section__title">占位内容左对齐</text>
+			<fui-search-bar isLeft background="#111" color="#fff" inputBackground="#222" @search="search">
+			</fui-search-bar>
+			<text class="fui-section__title">禁用状态，只做跳转</text>
+			<fui-search-bar disabled @click="onClick"></fui-search-bar>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			search(e) {
+				//输入框值
+				console.log(e.detail.value)
+				uni.fui.toast(`搜索关键词:${e.detail.value}`)
+				//搜索逻辑自行处理
+				//...
+			},
+			onClick() {
+				uni.fui.toast('跳转至搜索页面~')
+			},
+			back() {
+				uni.navigateBack()
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+	/* #endif */
+
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+	}
+
+	.fui-arrow__left {
+		/* #ifndef APP-NVUE */
+		flex-shrink: 0;
+		/* #endif */
+		margin-left: -8rpx;
+		padding-right: 12rpx;
+	}
+
+	.fui-arrow__left:active {
+		opacity: .5;
+	}
+</style>

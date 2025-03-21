@@ -1,0 +1,7 @@
+// 法语
+{
+	"fui-image-cropper.loading": "Loading",
+	"fui-image-cropper.netimgerror": "Échec du traitement de l'image réseau",
+	"fui-image-cropper.croperror": "Échec du recadrage de l'image, veuillez réessayer plus tard",
+	"fui-image-cropper.select": "Veuillez sélectionner l'image à recadrer"
+}

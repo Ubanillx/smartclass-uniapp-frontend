@@ -1,0 +1,60 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="SlideVerify"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">SlideVerify 滑动验证码，根据提示进行行为验证。</text>
+		</view>
+		<view class="fui-page__bd fui-page__spacing">
+			<text class="fui-section__title fui-mtop--0">基础使用</text>
+			<fui-slide-verify @success="success" @fail="fail"></fui-slide-verify>
+			<text class="fui-section__title">调整样式</text>
+			<fui-slide-verify background="rgba(9, 190, 79, .05)" activeBgColor="#09BE4F" passColor="#09BE4F"
+				lineColor="#FFB703" @success="success" @fail="fail"></fui-slide-verify>
+			<text class="fui-section__title">重置验证</text>
+			<fui-slide-verify ref="sv" @success="success" @fail="fail"></fui-slide-verify>
+			<view class="fui-btn__box">
+				<fui-button type="gray" btn-size="medium" text="重置验证" bold :margin="['40rpx']" @click="reset">
+				</fui-button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			success() {
+				uni.fui.toast('验证通过！')
+			},
+			fail() {
+				uni.fui.toast('验证失败！')
+			},
+			reset() {
+				this.$refs.sv && this.$refs.sv.reset()
+				uni.fui.toast('重置成功！')
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-btn__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+	}
+</style>

@@ -1,0 +1,6 @@
+// 中文简体
+{
+	"fui-countdown-verify.text": "发送验证码",
+	"fui-countdown-verify.sending": "正在发送...",
+	"fui-countdown-verify.sent": "s后重新获取"
+}

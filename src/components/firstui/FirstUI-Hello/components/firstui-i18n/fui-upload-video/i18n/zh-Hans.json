@@ -1,0 +1,13 @@
+// 中文简体
+{
+	"fui-upload-video.url": "请传入服务器接口地址",
+	"fui-upload-video.deltip": "请等待上传结束再进行删除",
+	"fui-upload-video.delete": "确定将该视频删除吗？",
+	"fui-upload-video.confirm": "确定",
+	"fui-upload-video.loading": "上传中...",
+	"fui-upload-video.wait": "等待上传",
+	"fui-upload-video.preupload": "上传失败，点击重新上传",
+	"fui-upload-video.uploaded": "已上传",
+	"fui-upload-video.extension": "只能上传_suffix_格式视频",
+	"fui-upload-video.size": "单个视频大小不能超过：_size_MB"
+}

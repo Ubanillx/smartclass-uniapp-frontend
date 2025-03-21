@@ -1,0 +1,120 @@
+<template>
+	<view class="fui-wrap">
+		<fui-waterfall ref="waterfall" left-gap="20" right-gap="20" column-gap="16" top-gap="16" @end="onEnd">
+			<fui-waterfall-item v-for="(item,index) in goodsList" :key="index" :src="item.src" @click="handleClick(item,index)">
+				<view class="fui-goods__item-content" :class="{'fui-card__padding':true}">
+					<view>
+						<fui-overflow-hidden :rows="2" :size="28" :text="item.title">
+						</fui-overflow-hidden>
+					</view>
+					<view class="fui-goods__item-price">
+						<fui-text font-weight="500" text="￥" :size="22" color="#FF2B2B"></fui-text>
+						<fui-text font-weight="500" lineHeight :text="getPrice(item.price,1)" :size="34"
+							color="#FF2B2B"></fui-text>
+						<fui-text font-weight="500" :text="getPrice(item.price,2)" :size="24" color="#FF2B2B">
+						</fui-text>
+					</view>
+				</view>
+			</fui-waterfall-item>
+		</fui-waterfall>
+		<fui-loadmore activeColor="#7F7F7F" v-if="!isEnd || loading"></fui-loadmore>
+	</view>
+</template>
+
+<script>
+	//nvue app端建议直接使用nvue端专用组件waterfall
+	import list from './index.js'
+	export default {
+		data() {
+			return {
+				//数据列表
+				goodsList: [],
+				//瀑布流数据是否渲染完，未完成不可加载数据
+				isEnd: false,
+				//页码
+				pageNo: 1,
+				//是否加载完
+				finished: false,
+				loading: false
+			}
+		},
+		onLoad() {
+			setTimeout(() => {
+				this.goodsList = list
+			}, 300)
+		},
+		methods: {
+			getPrice(price, type) {
+				if (!price) return ''
+				const arr = price.split('.')
+				return type === 1 ? arr[0] : `.${arr[1]}`
+			},
+			onEnd(e) {
+				this.isEnd = true
+			},
+			handleClick(item,index) {
+				uni.fui.toast('点击了~')
+			}
+		},
+		onPullDownRefresh: function() {
+			//重置加载
+			this.$refs.waterfall.resetLoadmore();
+			setTimeout(() => {
+				uni.stopPullDownRefresh();
+				//务必先清空原有数据
+				this.goodsList = [];
+				this.$nextTick(() => {
+					this.goodsList = list;
+					//数据成功返回后执行
+					this.pageNo = 1;
+					this.finished = false;
+					this.loading = false;
+					uni.fui.toast('刷新成功~');
+				})
+			}, 200);
+		},
+		onReachBottom: function() {
+			if (this.finished || !this.isEnd || this.loading) return;
+			this.loading = true;
+			//延时 模拟请求
+			setTimeout(() => {
+				const data = this.pageNo === 3 ? [] : (this.pageNo === 2 ? list.reverse() : list)
+				this.goodsList = this.goodsList.concat(data);
+				this.pageNo = this.pageNo + 1;
+				if (data.length < 10) {
+					this.finished = true;
+				}
+				this.loading = false;
+			}, 200)
+		}
+	}
+</script>
+
+<style>
+	.fui-wrap {
+		padding-top: 20rpx;
+		padding-bottom: 48rpx;
+	}
+
+	.fui-goods__item-content {
+		flex: 1;
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+	}
+
+	.fui-card__padding {
+		padding: 24rpx 20rpx;
+	}
+
+	.fui-goods__item-price {
+		flex: 1;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: flex-end;
+		padding-top: 24rpx;
+	}
+</style>

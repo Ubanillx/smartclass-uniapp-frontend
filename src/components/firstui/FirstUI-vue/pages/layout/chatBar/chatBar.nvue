@@ -1,0 +1,259 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">ChatBar</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">聊天栏，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title">聊天栏</text>
+			<!-- 布局内容 start -->
+			<view class="fui-chatbar__wrap">
+				<view class="fui-chatbar__icon-box" @tap="change">
+					<fui-icon :name="isVoice?'voice':'keyboard'"></fui-icon>
+				</view>
+				<view class="fui-chatbar__input-box">
+					<textarea :enableNative="false" auto-height :show-count="false" disable-default-padding
+						confirm-type="send" class="fui-chatbar__input" :style="getStyle"></textarea>
+					<view class="fui-chatbar__voice" v-if="!isVoice">
+						<text class="fui-chatbar__voice-text">按住 说话</text>
+					</view>
+				</view>
+				<view class="fui-chatbar__icon-box">
+					<fui-icon name="face"></fui-icon>
+				</view>
+				<view class="fui-chatbar__icon-box fui-chatbar__pdl">
+					<fui-icon name="plussign"></fui-icon>
+				</view>
+			</view>
+
+			<text class="fui-section__title">聊天栏</text>
+			<view class="fui-chatbar__wrap">
+				<view class="fui-chatbar__icon-box" @tap="change">
+					<fui-icon :name="isVoice?'voice':'keyboard'"></fui-icon>
+				</view>
+				<view class="fui-chatbar__input-box">
+					<textarea :enableNative="false" auto-height :show-count="false" disable-default-padding
+						confirm-type="send" class="fui-chatbar__input" :style="getStyle"></textarea>
+					<view class="fui-chatbar__voice" v-if="!isVoice">
+						<text class="fui-chatbar__voice-text">按住 说话</text>
+					</view>
+				</view>
+				<view class="fui-chatbar__icon-box fui-chatbar__send-box">
+					<text class="fui-chatbar__send">发送</text>
+				</view>
+			</view>
+
+			<view class="fui-chatbar__fixed">
+				<view class="fui-chatbar__wrap">
+					<view class="fui-chatbar__icon-box" @tap="change">
+						<fui-icon :name="isVoice?'voice':'keyboard'"></fui-icon>
+					</view>
+					<view class="fui-chatbar__input-box">
+						<textarea :enableNative="false" auto-height :show-count="false" fixed disable-default-padding
+							:cursor-spacing="spacing" confirm-type="send" class="fui-chatbar__input" :style="getStyle"
+							@focus="focusChange" @blur="blurChange"></textarea>
+						<view class="fui-chatbar__voice" v-if="!isVoice">
+							<text class="fui-chatbar__voice-text">按住 说话</text>
+						</view>
+					</view>
+					<view class="fui-chatbar__icon-box fui-chatbar__send-box">
+						<text class="fui-chatbar__send">发送</text>
+					</view>
+				</view>
+				<!-- #ifdef APP-NVUE -->
+				<fui-safe-area background="#f8f8f8"></fui-safe-area>
+				<!-- #endif -->
+				<!-- #ifndef APP-NVUE -->
+				<fui-safe-area background="#f8f8f8" v-if="!focus"></fui-safe-area>
+				<!-- #endif -->
+			</view>
+			<!-- 布局内容 end -->
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			let spacing = 12
+			// #ifdef APP-NVUE
+			spacing = 6
+			// #endif
+			return {
+				spacing,
+				//keyboard
+				isVoice: true,
+				focus: false
+			}
+		},
+		computed: {
+			getStyle() {
+				let style = ''
+				// #ifdef APP-NVUE
+				style += `min-height:72rpx;`
+				// #endif
+				return style
+			}
+		},
+		methods: {
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			},
+			change() {
+				this.isVoice = !this.isVoice
+			},
+			focusChange() {
+				this.focus = true
+			},
+			blurChange() {
+				this.focus = false
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	/* 布局内容样式 start */
+	.fui-chatbar__wrap {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		padding: 6px 0;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+		background: #f8f8f8;
+	}
+
+	.fui-chatbar__input-box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		flex: 1;
+		position: relative;
+	}
+
+	.fui-chatbar__input {
+		/* #ifndef APP-NVUE || MP-ALIPAY || MP-QQ */
+		width: 100%;
+		min-height: 32rpx;
+		box-sizing: content-box;
+		padding: 20rpx;
+		line-height: 32rpx;
+		/* #endif */
+
+		/* #ifdef MP-ALIPAY || MP-QQ */
+		line-height: 1;
+		min-height: 72rpx;
+		/* #endif */
+
+		/* #ifdef APP-NVUE */
+		/* min-height 写入css有警告 */
+		/* min-height: 72rpx; */
+		flex: 1;
+		height: 72rpx;
+		padding: 16rpx 20rpx;
+		/* #endif */
+		border-radius: 8rpx;
+		font-size: 32rpx;
+		background: #fff;
+	}
+
+	.fui-chatbar__voice {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: #fff;
+		border-radius: 8rpx;
+		text-align: center;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		z-index: 10;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
+	}
+
+	.fui-chatbar__voice:active {
+		background-color: #ddd;
+	}
+
+	.fui-chatbar__voice-text {
+		text-align: center;
+		font-weight: bold;
+		font-size: 32rpx;
+	}
+
+	.fui-chatbar__icon-box {
+		height: 72rpx;
+		padding: 0 16rpx;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-shrink: 0;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
+	}
+
+	.fui-chatbar__icon-box:active {
+		opacity: .5;
+	}
+
+	.fui-chatbar__pdl {
+		padding-left: 0;
+	}
+
+	.fui-chatbar__send-box {
+		padding: 0 30rpx;
+	}
+
+	.fui-chatbar__send {
+		color: #465CFF;
+		font-size: 30rpx;
+	}
+
+	.fui-chatbar__fixed {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		/* #ifndef APP-NVUE */
+		z-index: 10;
+		/* #endif */
+	}
+
+	/* 布局内容样式 end */
+</style>

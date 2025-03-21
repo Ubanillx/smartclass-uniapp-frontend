@@ -1,0 +1,56 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Rate"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Rate 评分，对评价进行展示或对事物进行快速的评级操作。</text>
+		</view>
+		<view class="fui-page__bd fui-page__spacing">
+			<text class="fui-section__title fui-mtop--0">基础使用</text>
+			<fui-rate @change="change"></fui-rate>
+			<text class="fui-section__title">设置颜色</text>
+			<fui-rate color="#888" activeColor="#465CFF" @change="change"></fui-rate>
+			<text class="fui-section__title">设置大小</text>
+			<fui-rate :size="48" @change="change"></fui-rate>
+			<text class="fui-section__title">设置最大评分数</text>
+			<fui-rate :max="8" :score="5" @change="change"></fui-rate>
+			<text class="fui-section__title">支持半星</text>
+			<fui-rate allowHalf @change="change"></fui-rate>
+			<text class="fui-section__title">仅展示，禁用操作</text>
+			<fui-rate disabled :score="3" @change="change"></fui-rate>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			change(e) {
+				//返回评分 e.score
+				console.log(e)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		background: #fff;
+	}
+	/* #endif */
+
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+</style>

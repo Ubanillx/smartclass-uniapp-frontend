@@ -1,0 +1,67 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Waterfall"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Waterfall 瀑布流，是比较流行的一种页面布局，视觉表现为参差不齐的多栏布局。</text>
+		</view>
+		<view class="fui-page__bd">
+			<fui-waterfall @end="onEnd">
+				<fui-waterfall-item v-for="(item,index) in images" :key="index" :src="item">
+					<text class="fui-text">自定义信息</text>
+				</fui-waterfall-item>
+			</fui-waterfall>
+			<fui-loadmore v-if="!isEnd"></fui-loadmore>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				images: [
+					'https://res.firstui.cn/static/images/component/waterfall/P_001.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_002.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_003.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_004.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_005.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_006.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_007.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_008.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_009.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_010.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_011.jpeg',
+					'https://res.firstui.cn/static/images/component/waterfall/P_012.jpeg'
+				],
+				isEnd: false
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			onEnd(e) {
+				this.isEnd = true
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	.fui-text {
+		padding: 20rpx 0;
+		text-align: center;
+		/* #ifndef APP-NVUE */
+		font-weight: normal;
+		/* #endif */
+		font-size: 28rpx;
+		color: #B2B2B2
+	}
+</style>

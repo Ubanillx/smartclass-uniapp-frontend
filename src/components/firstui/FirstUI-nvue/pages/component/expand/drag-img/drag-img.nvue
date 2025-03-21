@@ -1,0 +1,78 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Drag"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Drag 拖拽排序，通过拖动列表元素以此来达到对数据的重新排列。长按列表开启拖拽。</text>
+		</view>
+		<view class="fui-page__bd">
+			<fui-drag :width="720" :itemList="itemList" :columns="4" square :styles="styles" @end="end"></fui-drag>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				itemList: [{
+					id: 1,
+					src: '/static/images/common/logo.png'
+				}, {
+					id: 2,
+					src: '/static/images/common/img_logo.png'
+				}, {
+					id: 3,
+					src: '/static/images/qrcode/h5_qrcode.png'
+				}, {
+					id: 4,
+					src: '/static/images/qrcode/toutiao_qrcode.png'
+				}, {
+					id: 5,
+					src: '/static/images/qrcode/qq_qrcode.jpg'
+				}, {
+					id: 6,
+					src: '/static/images/qrcode/wx_qrcode.jpg'
+				}, {
+					id: 7,
+					src: '/static/images/qrcode/baidu_qrcode.png'
+				}, {
+					id: 8,
+					src: '/static/images/qrcode/ali_qrcode.png'
+				}, {
+					id: 9,
+					src: '/static/images/common/logo.png'
+				}, {
+					id: 10,
+					src: '/static/images/common/img_logo.png'
+				}],
+				styles: {
+					padding: 4
+				}
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			end(e) {
+				//排序后列表
+				console.log(e.itemList)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-page__bd {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+</style>

@@ -1,0 +1,207 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="CubicBezier"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">CubicBezier 贝塞尔曲线，可用于加入购物车动画。</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title fui-mtop--0">左下方</text>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<text class="fui-text">点击加号加入购物车</text>
+					<fui-cubic-bezier :left="left" :bottom="bottom" :param="0" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<text class="fui-badge">1</text>
+						</template>
+					</fui-cubic-bezier>
+				</view>
+			</fui-list-cell>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<text class="fui-text">点击加号加入购物车</text>
+					<fui-cubic-bezier :left="left" :bottom="bottom" :param="1" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<image class="fui-badge--logo" src="/static/images/common/img_logo.png"></image>
+						</template>
+					</fui-cubic-bezier>
+				</view>
+			</fui-list-cell>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<fui-cubic-bezier :left="left" :bottom="bottom" :param="1" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<image class="fui-badge--logo" src="/static/images/common/img_logo.png"></image>
+						</template>
+					</fui-cubic-bezier>
+					<text class="fui-text">点击加号加入购物车</text>
+				</view>
+			</fui-list-cell>
+			<text class="fui-section__title">右下方</text>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<text class="fui-text">点击加号加入购物车</text>
+					<fui-cubic-bezier direction="rb" :right="right" :bottom="bottom" :param="1" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<image class="fui-badge--logo" src="/static/images/common/img_logo.png"></image>
+						</template>
+					</fui-cubic-bezier>
+				</view>
+			</fui-list-cell>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<fui-cubic-bezier direction="rb" :right="right" :bottom="bottom" :param="0" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<text class="fui-badge">1</text>
+						</template>
+					</fui-cubic-bezier>
+					<text class="fui-text">点击加号加入购物车</text>
+				</view>
+			</fui-list-cell>
+			<fui-list-cell :highlight="false">
+				<view class="fui-list__item">
+					<fui-cubic-bezier direction="rb" :right="right" :bottom="bottom" :param="1" @click="handleClick">
+						<fui-icon name="plussign"></fui-icon>
+						<template v-slot:badge>
+							<image class="fui-badge--logo" src="/static/images/common/img_logo.png"></image>
+						</template>
+					</fui-cubic-bezier>
+					<text class="fui-text">点击加号加入购物车</text>
+				</view>
+			</fui-list-cell>
+
+		</view>
+		<view class="fui-cart--box fui-cart--left">
+			<fui-icon name="cart"></fui-icon>
+		</view>
+		<view class="fui-cart--box fui-cart--right">
+			<fui-icon name="cart"></fui-icon>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				left: 116,
+				bottom: 140,
+				right: 100
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			handleClick(e) {
+				console.log(e)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-page__bd {
+		padding-bottom: 600rpx;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+	}
+
+	.fui-list__item {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		flex: 1;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		background: #fff;
+	}
+
+	.fui-text {
+		/* #ifndef APP-NVUE */
+		font-weight: normal;
+		/* #endif */
+		font-size: 30rpx;
+	}
+
+	.fui-tabbar--wrap {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		display: flex;
+		/* #endif */
+		height: 144rpx;
+		padding: 0 32rpx 44rpx;
+		background: #fff;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.fui-cart--box {
+		width: 120rpx;
+		height: 120rpx;
+		/* #ifndef APP-NVUE */
+		border-radius: 50%;
+		display: flex;
+		z-index: 100;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		border-radius: 80rpx;
+		/* #endif */
+		background: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		position: fixed;
+		bottom: 80rpx;
+		box-shadow: 0 10rpx 14rpx 0 rgba(0, 0, 0, 0.1);
+
+	}
+	.fui-cart--left{
+		left: 40rpx;
+	}
+
+	.fui-cart--right {
+		right: 40rpx;
+	}
+
+	.fui-badge {
+		width: 18px;
+		height: 18px;
+		/* #ifndef APP-NVUE */
+		border-radius: 50%;
+		display: flex;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		border-radius: 10px;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		background: #FF2B2B;
+		color: #fff;
+		font-size: 12px;
+	}
+
+	.fui-badge--logo {
+		width: 18px;
+		height: 18px;
+	}
+</style>

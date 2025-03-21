@@ -1,0 +1,111 @@
+<template>
+	<view class="fui-wrap">
+		<text class="fui-section__title">表头固定/排序/行列滚动</text>
+		<fui-table-weex ref="sortTable" fixed height="400" :itemList="itemList" :header="header" @click="detail"
+			@sortChange="sortChange"></fui-table-weex>
+		<list class="fui-list--box">
+			<cell>
+				<view class="fui-list--inner">
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+					<fui-text :text="text" :size="28"></fui-text>
+				</view>
+			</cell>
+		</list>
+	</view>
+</template>
+
+<script>
+	import data from '@/pages/tableData.js'
+	export default {
+		data() {
+			return {
+				itemList: data.itemList,
+				header: [{
+					prop: 'date',
+					label: '日期',
+					//是否开启排序
+					sortable: true,
+					//排序图标颜色，颜色不传值则使用默认值
+					sortColor: '#465CFF',
+					//必传：排序数据类型
+					sortType: 'date',
+					//排序图标right值，默认40（单位rpx），根据列宽度自行调整至合适的位置
+					// sortRight:40
+				}, {
+					prop: 'ranking',
+					label: '名次',
+					sortable: true,
+					sortColor: '#465CFF',
+					sortType: 'number'
+				}, {
+					prop: 'province',
+					label: '省份',
+					sortColor: '#465CFF',
+					sortable: true,
+					sortType: 'string'
+				}, {
+					prop: 'city',
+					label: '城市'
+				}, {
+					prop: 'address',
+					label: '地址',
+					width: 320
+				}, {
+					label: '操作',
+					type: 3,
+					width: 160,
+					buttons: [{
+						text: '详情',
+						color: '#465CFF',
+						// size: 30,
+						fontWeight: 600
+					}]
+				}],
+				text: 'First UI是一套超高性能、超高颜值的移动端UI综合解决方案，包含业内顶尖的组件库、强大的功能库、丰富精美的模板库，提供uni-app(完美支持nvue)、微信小程序、支付宝小程序等版本，兼顾高效率与高性能，让您的开发获得百倍提质提速！'
+			}
+		},
+
+		methods: {
+			detail(e) {
+				console.log(e)
+				uni.showToast({
+					title: e.item.province,
+					icon: 'none'
+				})
+			},
+			sortChange(e) {
+				//排序数据发生改变时触发
+				console.log(e)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-wrap {
+		flex: 1;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		margin-top: 32rpx;
+		width: 716rpx;
+	}
+
+	.fui-list--box {
+		flex: 1;
+	}
+
+	.fui-list--inner {
+		padding: 32rpx;
+	}
+</style>

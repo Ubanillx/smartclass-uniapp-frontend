@@ -1,0 +1,126 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd" :class="{'fui-notice__pt':show}">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text text="NoticeBar" font-weight="600" size="36"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">NoticeBar 通告栏，一般用作系统提醒、活动提醒等通知。</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title fui-mtop--0">单行展示</text>
+			<fui-notice-bar :padding="['0','32rpx']" :content="content" single></fui-notice-bar>
+			<text class="fui-section__title">多行展示</text>
+			<fui-notice-bar background="#fff8d5" color="#FFB703" :padding="['16rpx','32rpx']" :content="content">
+			</fui-notice-bar>
+			<text class="fui-section__title">文字滚动</text>
+			<fui-notice-bar :content="content" scrollable></fui-notice-bar>
+			<text class="fui-section__title">加图标/控制速度</text>
+			<fui-notice-bar :content="content" :speed="200" scrollable activeMode="forwards">
+				<view class="fui-icon__box">
+					<fui-icon name="notice" :size="36" color="#FF2B2B"></fui-icon>
+				</view>
+			</fui-notice-bar>
+			<text class="fui-section__title">查看更多</text>
+			<fui-notice-bar :content="content" height="88" size="30" single background="#fff" color="#333">
+				<view class="fui-icon__box">
+					<fui-icon name="notice-fill" :size="40" color="#465CFF"></fui-icon>
+				</view>
+				<template v-slot:right>
+					<view class="fui-more__wrap">
+						<text class="fui-more__text">查看更多</text>
+						<fui-icon name="arrowright" :size="36" color="#7F7F7F"></fui-icon>
+					</view>
+				</template>
+			</fui-notice-bar>
+		</view>
+		<!--顶部固定-->
+		<view class="fui-notice__fixed" v-if="show">
+			<fui-notice-bar :content="content" background="#fff8d5" color="#FF2B2B" scrollable>
+				<view class="fui-icon__box">
+					<fui-icon name="notice" :size="36" color="#FF2B2B"></fui-icon>
+				</view>
+				<template v-slot:right>
+					<view class="fui-more__wrap" @tap.stop="closeNotice">
+						<fui-icon name="close" :size="40" color="#FF2B2B"></fui-icon>
+					</view>
+				</template>
+			</fui-notice-bar>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				content: 'First UI 是一套基于uni-app开发的组件化、可复用、易扩展、低耦合的跨平台移动端UI 组件库。',
+				show: true
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			closeNotice() {
+				this.show = false
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+	/* #endif */
+
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	/* #ifndef APP-NVUE */
+	.fui-page__hd {
+		transition: all .2s;
+	}
+	/* #endif */
+
+	.fui-section__title {
+		margin-left: 32rpx;
+	}
+
+	.fui-icon__box {
+		padding-left: 24rpx;
+		padding-right: 12rpx;
+	}
+
+	.fui-more__wrap {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		padding: 0 24rpx;
+	}
+
+	.fui-more__text {
+		font-size: 26rpx;
+		color: #7F7F7F;
+	}
+
+	.fui-notice__fixed {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		z-index: 10;
+		/* #endif */
+		position: fixed;
+		left: 0;
+		top: 0;
+		
+	}
+
+	.fui-notice__pt {
+		padding-top: 124rpx;
+	}
+</style>

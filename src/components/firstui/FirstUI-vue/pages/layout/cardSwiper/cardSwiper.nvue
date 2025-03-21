@@ -1,0 +1,194 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="vip">
+				<text class="fui-page__title">CardSwiper</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">卡片轮播，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<text class="fui-section__title">卡片轮播</text>
+			<!-- 布局内容 start -->
+			<!-- app-nvue、字节跳动小程序、飞书小程序不支持 previous-margin、next-margin-->
+			<fui-swiper-dot :items="items" :current="current">
+				<swiper previous-margin="60rpx" next-margin="60rpx" class="fui-card__swiper" @change="change" circular
+					:indicator-dots="false" autoplay :interval="5000" :duration="150">
+					<swiper-item v-for="(item,index) in items" :key="index" class="fui-cs__swiper-item">
+						<view class="fui-cardswiper__item" :class="{'fui-cardswiper__scale':current!==index}">
+							<image :src="item.src" class="fui-cardswiper__img"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+			</fui-swiper-dot>
+
+			<text class="fui-section__title">卡片轮播</text>
+			<fui-swiper-dot :items="items" :current="current2" :styles="styles">
+				<view class="fui-cardswiper__box">
+					<swiper class="fui-card__swiper-wrap" @change="change2" circular :indicator-dots="false" autoplay
+						:interval="5000" :duration="150">
+						<swiper-item v-for="(item,index) in items" :key="index" class="fui-cs__swiper-item">
+							<view class="fui-cardswiper__item">
+								<image :src="item.src" class="fui-cardswiper__img"></image>
+							</view>
+						</swiper-item>
+					</swiper>
+				</view>
+			</fui-swiper-dot>
+
+			<text class="fui-section__title">卡片轮播</text>
+			<view class="fui-cardswiper__box">
+				<swiper class="fui-card__swiper-wrap" circular :indicator-dots="false" autoplay vertical
+					:interval="5000" :duration="150">
+					<swiper-item v-for="(item,index) in items" :key="index" class="fui-cs__swiper-item">
+						<view class="fui-cardswiper__item">
+							<image :src="item.src" class="fui-cardswiper__img"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+			</view>
+			<!-- 布局内容 end -->
+		</view>
+		<view class="fui-btn__box">
+			<fui-button type="gray" btn-size="medium" text="More" bold :margin="['24rpx']" @click="href">
+			</fui-button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				current: 0,
+				current2: 0,
+				items: [{
+					src: 'https://res.firstui.cn/static/images/component/sc/img_sc_1.png'
+				}, {
+					src: 'https://res.firstui.cn/static/images/component/sc/img_sc_2.png'
+				}, {
+					src: 'https://res.firstui.cn/static/images/component/sc/img_sc_3.png'
+				}],
+				styles: {
+					activeBackground: '#FFB703',
+					activeWidth: 30
+				}
+			}
+		},
+		methods: {
+			vip() {
+				const url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				uni.fui.href(url)
+			},
+			href() {
+				const url = "/pages/component/expand/swiperDot/swiperDot"
+				uni.fui.href(url)
+			},
+			change(e) {
+				this.current = e.detail.current;
+			},
+			change2(e) {
+				this.current2 = e.detail.current;
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+	.fui-wrap {
+		padding-bottom: 64rpx;
+	}
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	.fui-btn__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	/* 布局内容样式 start */
+
+	.fui-card__swiper {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		height: 320rpx;
+	}
+
+	.fui-cardswiper__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		height: 320rpx;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.fui-card__swiper-wrap {
+		width: 640rpx;
+		height: 320rpx;
+	}
+
+	.fui-cs__swiper-item {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.fui-cardswiper__item {
+		width: 640rpx;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		transition-timing-function: linear;
+		transition-duration: .1s;
+		transition-property:transform ;
+		height: 320rpx;
+		background: #f8f8f8;
+		align-items: center;
+		justify-content: center;
+		border-radius: 24rpx;
+		overflow: hidden;
+	}
+
+	.fui-cardswiper__img {
+		width: 640rpx;
+		height: 320rpx;
+		/* #ifndef APP-NVUE */
+		display: block;
+		/* #endif */
+		border-radius: 24rpx;
+	}
+
+	/* #ifndef APP-NVUE */
+	.fui-cardswiper__scale {
+		transform: scale3d(.9, .9, 1);
+	}
+
+	/* #endif */
+
+	/* 布局内容样式 end */
+</style>

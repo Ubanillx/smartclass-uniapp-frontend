@@ -1,0 +1,7 @@
+// 阿拉伯语
+{
+	"fui-slider-captcha.title": "التحقق من السلامة",
+	"fui-slider-captcha.tip": "اسحب شريط التمرير أدناه لإكمال اللغز",
+	"fui-slider-captcha.resource": "فشلت معالجة موارد الصورة",
+	"fui-slider-captcha.support": "الصور ذات التنسيق Base64 غير مدعومة حاليًا"
+}

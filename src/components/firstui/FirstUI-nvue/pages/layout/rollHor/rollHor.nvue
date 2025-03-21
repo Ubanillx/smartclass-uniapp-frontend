@@ -1,0 +1,128 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="href(1)">
+				<text class="fui-page__title">Roll Horizontal</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">横向滚动，常用的页面布局，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd fui-page__spacing">
+			<text class="fui-section__title">访问记录</text>
+			<view class="fui-card__wrap">
+				<fui-list-cell background="transparent" arrow :bottomBorder="false" :highlight="false"
+					:padding="['24rpx','24rpx','48rpx']">
+					<view class="fui-card__header">
+						<fui-text text="我的经常访问" :size="28" fontWeight="bold"></fui-text>
+						<fui-text text="查看全部" :size="26" type="gray"></fui-text>
+					</view>
+				</fui-list-cell>
+				<scroll-view :scroll-x="true" :show-scrollbar="false" class="fui-scroll__view">
+					<view class="fui-cell__list">
+						<view class="fui-list__item" v-for="(item,index) in records" :key="index">
+							<fui-avatar :src="item.avatar" marginBottom="20"></fui-avatar>
+							<fui-overflow-hidden :text="item.name" align="center" :size="26" width="128rpx">
+							</fui-overflow-hidden>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+
+			<view class="fui-btn__box">
+				<fui-button type="gray" btn-size="medium" text="自定义滚动条" bold @click="href(2)"></fui-button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import mock from './index.js'
+	export default {
+		data() {
+			return {
+				records: mock.records
+			}
+		},
+		methods: {
+			href(type) {
+				const url = type === 1 ? "/pages/my/qa/qa?index=2&title=VIP专属内容" : '/pages/component/layout/horizontal-scroll/horizontal-scroll'
+				uni.fui.href(url)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	.fui-btn__box {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		padding-top: 64rpx;
+	}
+
+	/*
+	  访问记录
+	*/
+	.fui-card__wrap {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		border-radius: 16rpx;
+		overflow: hidden;
+		background-color: #fff;
+	}
+
+	.fui-card__header {
+		flex: 1;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		width: 100%;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.fui-scroll__view {
+		flex-direction: row;
+		overflow: hidden;
+	}
+
+
+	.fui-cell__list {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+	}
+
+	.fui-list__item {
+		width: 160rpx;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		box-sizing: border-box;
+		/* #endif */
+		flex-direction: column;
+		align-items: center;
+		padding: 0 16rpx 24rpx;
+	}
+</style>

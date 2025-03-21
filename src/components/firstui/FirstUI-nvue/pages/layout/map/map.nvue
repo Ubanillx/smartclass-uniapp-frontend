@@ -1,0 +1,63 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-align__center" @tap="href">
+				<text class="fui-page__title">Map</text>
+				<image src="/static/images/index/light/icon_member_3x.png" class="fui-vip__icon"></image>
+			</view>
+			<text class="fui-page__desc">地图，常用的功能演示，可提升开发效率以及带来舒服的视觉效果！</text>
+		</view>
+		<view class="fui-page__bd">
+			<fui-button type="gray" btn-size="medium" text="路线规划示例" bold :margin="['24rpx']"
+				@click="href(1)"></fui-button>
+			<fui-button type="gray" btn-size="medium" text="更多示例" bold @click="href(2)"></fui-button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				// I4OBZ-YWVWU-MENVE-4Z3TZ-GEAJT-IWBX3
+			}
+		},
+		methods: {
+			href(type) {
+				let url = "/pages/my/qa/qa?index=2&title=VIP专属内容"
+				if (type) {
+					url = type === 1 ? '/pages/layout/route/route' : '/pages/layout/markerCluster/markerCluster'
+				}
+				uni.fui.href(url)
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-NVUE */
+	page {
+		font-weight: normal;
+	}
+
+	/* #endif */
+
+	.fui-align__center {
+		flex-direction: row;
+	}
+
+	.fui-section__title {
+		margin-left: 32rpx;
+		/* #ifdef APP-NVUE */
+		margin-top: 64rpx;
+		/* #endif */
+	}
+
+	.fui-page__bd {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+	}
+</style>

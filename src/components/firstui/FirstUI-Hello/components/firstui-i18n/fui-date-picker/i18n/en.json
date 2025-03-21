@@ -1,0 +1,10 @@
+// 英语
+{
+	"fui-date-picker.start": "Start Date",
+	"fui-date-picker.end": "End Date",
+	"fui-date-picker.confirm": "OK",
+	"fui-date-picker.cancel": "Cancel",
+	"fui-date-picker.error": "The default date and time format is incorrect",
+	"fui-date-picker.select": "Please select a(n) _date_",
+	"fui-date-picker.range": "Please select the correct range"
+}

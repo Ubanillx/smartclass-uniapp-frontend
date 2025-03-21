@@ -1,0 +1,13 @@
+// 阿拉伯语
+{
+	"fui-upload.url": "يرجى تمرير عنوان واجهة الخادم",
+	"fui-upload.deltip": "Please wait until the upload is finished before deleting", // to be translated
+	"fui-upload.delete": "هل أنت متأكد من مسح هذه الصورة؟",
+	"fui-upload.confirm": "موافق",
+	"fui-upload.loading": "Loading",
+	"fui-upload.preupload": "Reupload",
+	"fui-upload.uploading": "Uploading",
+	"fui-upload.max": "You can upload up to _max_ picture(s)", // to be translated
+	"fui-upload.suffix": "Only _suffix_ format images can be uploaded", // to be translated
+	"fui-upload.size": "The size of a single image cannot exceed _size_MB" // to be translated
+}

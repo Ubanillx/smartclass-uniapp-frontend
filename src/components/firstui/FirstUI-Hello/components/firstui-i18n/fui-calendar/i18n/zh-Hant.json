@@ -1,0 +1,9 @@
+// 繁体
+{
+	"fui-calendar.ok": "確定",·
+	"fui-calendar.start": "開始",
+	"fui-calendar.end": "結束",
+	"fui-calendar.outofrange": "日期已超出可切換範圍",
+	"fui-calendar.max": "最多可選max天，目前已超出可選範圍",
+	"fui-calendar.maxdays": "最多可選max天"
+}

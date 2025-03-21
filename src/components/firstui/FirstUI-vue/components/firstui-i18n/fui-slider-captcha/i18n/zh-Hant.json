@@ -1,0 +1,7 @@
+// 繁体
+{
+	"fui-slider-captcha.title": "安全驗證",
+	"fui-slider-captcha.tip": "拖動下方滑塊完成拼圖",
+	"fui-slider-captcha.resource": "圖片資源處理失敗",
+	"fui-slider-captcha.support": "暫不支持base64格式圖片"
+}

@@ -1,0 +1,74 @@
+<template>
+	<fui-list :topBorder="false" bottomBorder bottomLeft="32" bottomRight="32">
+		<view class="fui-news__item" @tap="handleClick">
+			<fui-overflow-hidden :text="item.title" :size="36" :rows="3"></fui-overflow-hidden>
+			<view class="fui-image__list" v-if="item.imageList && item.imageList.length">
+				<fui-lazyload :src="src" v-for="(src,idx) in item.imageList" :key="idx"
+					:width="item.imageList.length>1?200:400" :height="item.imageList.length>1?200:0" marginRight="20"
+					mode="aspectFill"></fui-lazyload>
+			</view>
+			<view class="fui-news__info">
+				<fui-text v-if="item.isTop" :padding="['0','20rpx','0','0']" text="置顶" :size="25" color="#FF2B2B">
+				</fui-text>
+				<fui-text :padding="['0','20rpx','0','0']" :text="item.source" :size="25" color="#7F7F7F">
+				</fui-text>
+				<fui-text :text="`${item.comment}评论`" :size="25" color="#7F7F7F"></fui-text>
+			</view>
+		</view>
+	</fui-list>
+</template>
+
+<script>
+	export default {
+		name: 'fNewsItem',
+		emits: ['click'],
+		props: {
+			item: {
+				type: Object,
+				default () {
+					return {}
+				}
+			}
+		},
+		methods: {
+			handleClick() {
+				this.$emit('click');
+			}
+		}
+	};
+</script>
+
+<style scoped>
+	.fui-news__item {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		box-sizing: border-box;
+		/* #endif */
+		padding: 20rpx 32rpx;
+		background-color: #fff;
+	}
+
+	.fui-news__item:active {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.fui-image__list {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		flex-wrap: wrap;
+		padding-top: 20rpx;
+		padding-bottom: 16rpx;
+	}
+
+	.fui-news__info {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		transform: scale(0.8);
+		transform-origin: 0 100%;
+	}
+</style>

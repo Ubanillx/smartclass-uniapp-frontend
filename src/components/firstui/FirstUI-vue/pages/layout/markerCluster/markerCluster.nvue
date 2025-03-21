@@ -1,0 +1,29 @@
+<template>
+	<view class="fui-wrap">
+		<fui-empty src="https://res.firstui.cn/static/images/common/img_coding_3x.png" isFixed title="开发中~" descr="更多示例敬请期待!"></fui-empty>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+/* #ifndef APP-NVUE */
+page{
+	background-color: #fff;
+}
+/* #endif */
+.fui-wrap{
+	background-color: #fff;
+}
+</style>

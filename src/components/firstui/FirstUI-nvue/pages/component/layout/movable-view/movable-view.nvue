@@ -1,0 +1,66 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="MovableView"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">MovableView 可移动的视图容器，在页面中可以拖拽滑动，暂不支持缩放。</text>
+		</view>
+		<fui-movable-view @change="change">
+			<view class="fui-fab--box" @tap="handleClick">
+				<fui-icon name="edit" color="#fff"></fui-icon>
+			</view>
+		</fui-movable-view>
+
+		<fui-movable-view top="200">
+			<view class="fui-fab--box" @tap="handleClick">
+				<fui-icon name="share" color="#fff"></fui-icon>
+			</view>
+		</fui-movable-view>
+
+		<fui-movable-view left="80">
+			<view class="fui-fab--box" @tap="handleClick">
+				<fui-icon name="plus" color="#fff"></fui-icon>
+			</view>
+		</fui-movable-view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			change(e) {
+				console.log(e)
+			},
+			handleClick() {
+				uni.fui.toast('点击了~')
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-fab--box {
+		width: 108rpx;
+		height: 108rpx;
+		/* #ifdef APP-NVUE */
+		border-radius: 60rpx;
+		/* #endif */
+		/* #ifndef APP-NVUE */
+		border-radius: 50%;
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		background: #465CFF;
+	}
+</style>

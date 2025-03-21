@@ -1,0 +1,6 @@
+// 阿拉伯语
+{
+	"fui-countdown-verify.text": "الحصول على رمز التحقق",
+	"fui-countdown-verify.sending": "إرسال",
+	"fui-countdown-verify.sent": "s" //Resend after 
+}

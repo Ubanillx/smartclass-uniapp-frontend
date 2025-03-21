@@ -1,0 +1,7 @@
+// 阿拉伯语
+{
+	"fui-image-cropper.loading": "Loading",
+	"fui-image-cropper.netimgerror": "فشلت معالجة صور الشبكة",
+	"fui-image-cropper.croperror": "فشل اقتصاص الصورة، يرجى المحاولة مرة أخرى لاحقًا",
+	"fui-image-cropper.select": "الرجاء تحديد الصورة المراد اقتصاصها"
+}

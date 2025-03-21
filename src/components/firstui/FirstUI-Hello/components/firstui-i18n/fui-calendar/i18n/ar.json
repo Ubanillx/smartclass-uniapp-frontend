@@ -1,0 +1,9 @@
+// 阿拉伯语
+{
+	"fui-calendar.ok": "موافق",
+	"fui-calendar.start": "يبدأ",
+	"fui-calendar.end": "ينهي",
+	"fui-calendar.outofrange": "التاريخ خارج النطاق القابل للتحويل",
+	"fui-calendar.max": "You can select up to max days, which is currently out of the selectable range.",
+	"fui-calendar.maxdays": "You can select up to maxdays days"
+}

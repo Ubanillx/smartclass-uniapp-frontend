@@ -1,0 +1,7 @@
+// 英语
+{
+	"fui-image-cropper.loading": "Loading",
+	"fui-image-cropper.netimgerror": "Network image processing failed",
+	"fui-image-cropper.croperror": "Image cropping failed, please try again later",
+	"fui-image-cropper.select": "Please select the image to be cropped"
+}

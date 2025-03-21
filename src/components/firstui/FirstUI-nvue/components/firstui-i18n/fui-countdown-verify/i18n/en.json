@@ -1,0 +1,6 @@
+// 英语
+{
+	"fui-countdown-verify.text": "Get SMS",
+	"fui-countdown-verify.sending": "Sending...",
+	"fui-countdown-verify.sent": "s" //Resend after 
+}

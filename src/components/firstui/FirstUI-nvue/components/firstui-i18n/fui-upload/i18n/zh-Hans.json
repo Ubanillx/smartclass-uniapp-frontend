@@ -1,0 +1,13 @@
+// 中文简体
+{
+	"fui-upload.url": "请传入服务器接口地址",
+	"fui-upload.deltip": "请等待上传结束再进行删除",
+	"fui-upload.delete": "确定将该图片删除吗？",
+	"fui-upload.confirm": "确定",
+	"fui-upload.loading": "请稍候...",
+	"fui-upload.preupload": "重新上传",
+	"fui-upload.uploading": "正在上传...",
+	"fui-upload.max": "最多可上传_max_张图片",
+	"fui-upload.suffix": "只能上传_suffix_格式图片",
+	"fui-upload.size": "单张图片大小不能超过：_size_MB"
+}

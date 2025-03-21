@@ -1,0 +1,79 @@
+<template>
+	<view class="fui-wrap">
+		<view class="fui-page__hd">
+			<view class="fui-page__title fui-align__center" @tap="vip">
+				<fui-text font-weight="600" size="36" text="Drag"></fui-text>
+				<image class="fui-vip__icon" src="/static/images/index/light/icon_member_3x.png"></image>
+			</view>
+			<text class="fui-page__desc">Drag 拖拽排序，通过拖动列表元素以此来达到对数据的重新排列。长按列表开启拖拽。</text>
+		</view>
+		<view class="fui-page__bd">
+			<fui-drag :itemList="itemList" :itemHeight="88" :styles="styles" @end="end" @delete="del"></fui-drag>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				itemList: [{
+					id: 1,
+					text: '标题文本《一》'
+				}, {
+					id: 2,
+					text: '标题文本《二》'
+				}, {
+					id: 3,
+					text: '标题文本《三》'
+				}, {
+					id: 4,
+					text: '标题文本《四》'
+				}, {
+					id: 5,
+					text: '标题文本《五》'
+				}, {
+					id: 6,
+					text: '标题文本《六》'
+				}, {
+					id: 7,
+					text: '标题文本《七》'
+				}, {
+					id: 8,
+					text: '标题文本《八》'
+				}, {
+					id: 9,
+					text: '标题文本《九》'
+				}],
+				styles: {
+					type: 2,
+					isDel: true
+				}
+
+			}
+		},
+		methods: {
+			vip() {
+				uni.fui.href("/pages/my/qa/qa?index=2&title=VIP专属内容")
+			},
+			end(e) {
+				//排序后列表
+				console.log(e.itemList)
+			},
+			del(e) {
+				uni.fui.toast(`删除列目索引：${e.index}`)
+			}
+		}
+	}
+</script>
+
+<style>
+	.fui-page__bd {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+</style>

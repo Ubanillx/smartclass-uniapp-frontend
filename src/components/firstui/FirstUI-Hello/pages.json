@@ -1,0 +1,28 @@
+{
+	"pages": [ 
+		{
+			"path": "pages/index/index",
+			"style": {
+				// #ifdef H5
+				"titleNView": false,
+				// #endif
+				"navigationBarTitleText": "First UI"
+			}
+		}
+	],
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"fui-(.*)": "@/components/firstui/fui-$1/fui-$1.vue"
+		}
+	},
+	"globalStyle": {
+		"backgroundTextStyle": "dark",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "First UI",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F1F4FA",
+		"backgroundColorTop": "#F1F4FA",
+		"backgroundColorBottom": "#F1F4FA"
+	}
+}

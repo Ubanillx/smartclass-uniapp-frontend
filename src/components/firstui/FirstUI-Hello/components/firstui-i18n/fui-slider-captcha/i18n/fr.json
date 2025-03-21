@@ -1,0 +1,7 @@
+// 法语
+{
+	"fui-slider-captcha.title": "Vérification de sécurité",
+	"fui-slider-captcha.tip": "Faites glisser le curseur ci-dessous pour terminer le puzzle",
+	"fui-slider-captcha.resource": "Image resource processing failed",
+	"fui-slider-captcha.support": "Base64 format images are not currently supported"
+}

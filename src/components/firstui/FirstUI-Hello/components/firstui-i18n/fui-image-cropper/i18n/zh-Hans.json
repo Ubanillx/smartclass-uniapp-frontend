@@ -1,0 +1,7 @@
+// 中文简体
+{
+	"fui-image-cropper.loading": "请稍候...",
+	"fui-image-cropper.netimgerror": "网络图片处理失败~",
+	"fui-image-cropper.croperror": "图片裁剪失败，请稍候再试~",
+	"fui-image-cropper.select": "请选择要裁剪的图片！"
+}
