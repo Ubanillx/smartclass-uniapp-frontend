@@ -71,6 +71,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import fuiIcon from '../../components/firstui/FirstUI-vue/components/firstui/fui-icon/fui-icon.vue';
+import { login } from '../../api/user';
 
 // 声明uni类型，避免TypeScript报错
 declare const uni: any;
@@ -114,20 +115,7 @@ const validatePassword = () => {
 		return false;
 	}
 	
-	if (formData.password.length < 6) {
-		errors.password = '密码长度不能少于6个字符';
-		return false;
-	}
-	
-	// 密码需包含字母和数字
-	const hasLetter = /[a-zA-Z]/.test(formData.password);
-	const hasNumber = /[0-9]/.test(formData.password);
-	
-	if (!hasLetter || !hasNumber) {
-		errors.password = '密码需包含字母和数字';
-		return false;
-	}
-	
+	// 移除密码格式校验
 	errors.password = '';
 	return true;
 };
@@ -147,18 +135,46 @@ const handleLogin = () => {
 	
 	isSubmitting.value = true;
 	
-	// 这里是模拟登录请求
-	setTimeout(() => {
+	login({
+		username: formData.username,
+		password: formData.password
+	}).then(res => {
+		if (res.code === 0 && res.data) {
+			// 保存登录信息
+			uni.setStorageSync('userInfo', res.data);
+			uni.setStorageSync('token', res.data.token || res.data.userToken);
+			uni.setStorageSync('isLoggedIn', 'true');
+			
+			// 提示登录成功
+			uni.showToast({
+				title: '登录成功',
+				icon: 'success',
+				duration: 1500,
+				success: () => {
+					// 跳转到主页
+					setTimeout(() => {
+						uni.reLaunch({
+							url: '/pages/main/Home'
+						});
+					}, 1500);
+				}
+			});
+		} else {
+			// 登录失败
+			uni.showToast({
+				title: res.message || '登录失败',
+				icon: 'error'
+			});
+		}
+	}).catch(err => {
+		console.error('登录请求错误', err);
 		uni.showToast({
-			title: '登录成功',
-			icon: 'success'
+			title: err.message || '网络错误，请稍后重试',
+			icon: 'error'
 		});
+	}).finally(() => {
 		isSubmitting.value = false;
-		
-		// 登录成功后的处理，因为当前页面就是首页，不需要再跳转
-		// 如果有其他页面，可以在这里跳转
-		console.log('登录成功', formData);
-	}, 1500);
+	});
 };
 
 // 跳转到忘记密码页面

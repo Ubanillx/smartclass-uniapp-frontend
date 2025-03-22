@@ -194,6 +194,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { register, sendSmsCode } from '../../api/user';
 import fuiIcon from '../../components/firstui/FirstUI-vue/components/firstui/fui-icon/fui-icon.vue';
 
 // 声明uni类型，避免TypeScript报错
@@ -263,20 +264,6 @@ const validatePassword = () => {
 		return false;
 	}
 	
-	if (formData.password.length < 6) {
-		errors.password = '密码长度不能少于6个字符';
-		return false;
-	}
-	
-	// 密码需包含字母和数字
-	const hasLetter = /[a-zA-Z]/.test(formData.password);
-	const hasNumber = /[0-9]/.test(formData.password);
-	
-	if (!hasLetter || !hasNumber) {
-		errors.password = '密码需包含字母和数字';
-		return false;
-	}
-	
 	errors.password = '';
 	return true;
 };
@@ -337,21 +324,50 @@ const sendVerificationCode = () => {
 	
 	isCountingDown.value = true;
 	countdown.value = 60;
-	countdownText.value = `${countdown.value}秒后重新获取`;
+	countdownText.value = `${countdown.value}s`;
 	
+	// 计时器
 	const timer = setInterval(() => {
-		countdown.value--;
-		countdownText.value = `${countdown.value}秒后重新获取`;
-		
-		if (countdown.value <= 0) {
+		if (countdown.value > 1) {
+			countdown.value--;
+			countdownText.value = `${countdown.value}s`;
+		} else {
 			clearInterval(timer);
 			isCountingDown.value = false;
 			countdownText.value = '获取验证码';
 		}
 	}, 1000);
 	
-	// 这里可以添加发送验证码的接口调用
-	console.log('发送验证码到', formData.phone);
+	sendSmsCode({
+		phone: formData.phone
+	}).then(res => {
+		if (res.code === 0) {
+			uni.showToast({
+				title: '验证码已发送',
+				icon: 'success'
+			});
+		} else {
+			// 发送失败
+			uni.showToast({
+				title: res.message || '验证码发送失败',
+				icon: 'error'
+			});
+			// 重置倒计时
+			clearInterval(timer);
+			isCountingDown.value = false;
+			countdownText.value = '获取验证码';
+		}
+	}).catch(err => {
+		console.error('发送验证码错误', err);
+		uni.showToast({
+			title: err.message || '网络错误，请稍后重试',
+			icon: 'error'
+		});
+		// 重置倒计时
+		clearInterval(timer);
+		isCountingDown.value = false;
+		countdownText.value = '获取验证码';
+	});
 };
 
 // 表单验证 - 用户名注册
@@ -376,12 +392,12 @@ const validatePhoneForm = () => {
 
 // 提交注册
 const handleRegister = () => {
+	// 根据不同的注册方式验证表单
 	let isValid = false;
-	
 	if (activeTab.value === 'username') {
-		isValid = validateUsernameForm();
+		isValid = validateUsername() && validateNickname() && validatePassword() && validateConfirmPassword();
 	} else {
-		isValid = validatePhoneForm();
+		isValid = validatePhone() && validateCode() && validatePassword() && validateConfirmPassword();
 	}
 	
 	if (!isValid) {
@@ -390,19 +406,54 @@ const handleRegister = () => {
 	
 	isSubmitting.value = true;
 	
-	// 这里是模拟注册请求
-	setTimeout(() => {
+	// 准备注册数据
+	const registerData = activeTab.value === 'username' 
+		? {
+			type: 'username',
+			username: formData.username,
+			nickname: formData.nickname,
+			password: formData.password,
+			confirmPassword: formData.confirmPassword
+		} 
+		: {
+			type: 'phone',
+			phone: formData.phone,
+			code: formData.code,
+			password: formData.password,
+			confirmPassword: formData.confirmPassword
+		};
+	
+	register(registerData).then(res => {
+		if (res.code === 0) {
+			uni.showToast({
+				title: '注册成功',
+				icon: 'success',
+				duration: 1500,
+				success: () => {
+					// 注册成功后跳转到登录页
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/user/Login'
+						});
+					}, 1500);
+				}
+			});
+		} else {
+			// 注册失败
+			uni.showToast({
+				title: res.message || '注册失败',
+				icon: 'error'
+			});
+		}
+	}).catch(err => {
+		console.error('注册请求错误', err);
 		uni.showToast({
-			title: '注册成功',
-			icon: 'success'
+			title: err.message || '网络错误，请稍后重试',
+			icon: 'error'
 		});
+	}).finally(() => {
 		isSubmitting.value = false;
-		
-		// 注册成功后跳转到登录页
-		setTimeout(() => {
-			goToLogin();
-		}, 1500);
-	}, 1500);
+	});
 };
 
 // 跳转到登录页

@@ -13,11 +13,18 @@
 				"navigationBarTitleText": "注册账号",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/main/Home",
+			"style": {
+				"navigationBarTitleText": "智云星课",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "智云星课",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}
