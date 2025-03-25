@@ -25,9 +25,7 @@
 			
 			<!-- 我的内容 -->
 			<view v-if="activeTab === 'my'" class="page-content">
-				<view class="empty-content">
-					<text class="empty-text">个人中心即将上线</text>
-				</view>
+				<Profile />
 			</view>
 		</view>
 		
@@ -39,6 +37,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import TabBar from '../../components/TabBar.vue';
+import Profile from '../profile/index.vue';
 
 // 声明uni类型
 declare const uni: any;
