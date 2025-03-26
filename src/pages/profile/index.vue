@@ -2,12 +2,22 @@
   <view class="profile-container">
     <!-- 用户信息区域 -->
     <view class="user-info">
-      <image class="avatar" src="../../static/demo.png" mode="aspectFill" />
+      <fui-avatar 
+        :src="userAvatar" 
+        :text="avatarText"
+        :background="'#007AFF'"
+        :color="'#ffffff'"
+        :fontSize="64"
+        shape="circle"
+        :width="120"
+        :height="120"
+        mode="aspectFill"
+      />
       <view class="user-details">
-        <text class="username">Ubanillx</text>
-        <view class="phone">手机号：156****9905</view>
-        <view class="level">等级 3</view>
-        <text class="phone">距离下一级还需100经验</text>
+        <text class="username">{{ username }}</text>
+        <view class="phone">手机号：{{ phone }}</view>
+        <view class="level">等级 {{ level }}</view>
+        <text class="phone">距离下一级还需{{ nextLevelExp }}经验</text>
       </view>
       <view class="settings-icon">
         <text class="iconfont">⚙️</text>
@@ -78,42 +88,36 @@
   </view>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import DailyGoals from '@/components/profile/DailyGoals.vue'
 import Achievements from '@/components/profile/Achievements.vue'
 import RecentLearning from '@/components/profile/RecentLearning.vue'
 import LearningHistory from '@/components/profile/LearningHistory.vue'
 import LogoutButton from '@/components/profile/LogoutButton.vue'
+import fuiAvatar from "@/components/firstui/FirstUI-vue/components/firstui/fui-avatar/fui-avatar.vue"
 
-export default {
-  name: 'Profile',
-  components: {
-    DailyGoals,
-    Achievements,
-    RecentLearning,
-    LearningHistory,
-    LogoutButton
-  },
-  data() {
-    return {
-      // 数据将在后续实现
-    }
-  },
-  methods: {
-   handleLogout() {
-      // 退出登录逻辑将在后续实现
-      uni.showModal({
-        title: '提示',
-        content: '确认退出登录？',
-        success: function (res) {
-          if  (res.confirm) {
-            // 退出登录处理
-          }
-        }
-      })
-    }
-  }
-}
+// Mock 用户数据
+const userData = ref({
+  username: 'Ubanillx',
+  phone: '156****9905',
+  level: 3,
+  nextLevelExp: 100,
+  avatar: '../../static/demo.png' // 空字符串表示没有头像
+})
+
+// 计算属性：头像文本（用户名首字母）
+const avatarText = computed(() => {
+  return userData.value.username.charAt(0).toUpperCase()
+})
+
+// 计算属性：头像地址
+const userAvatar = computed(() => {
+  return userData.value.avatar || ''
+})
+
+// 解构用户数据
+const { username, phone, level, nextLevelExp } = userData.value
 </script>
 
 <style lang="scss" scoped>
@@ -131,12 +135,6 @@ export default {
   align-items: center;
   position: relative;
   margin-bottom: 20rpx;
-
-  .avatar {
-    width: 120rpx;
-    height: 120rpx;
-    border-radius: 60rpx;
-  }
 
   .user-details {
     margin-left: 20rpx;

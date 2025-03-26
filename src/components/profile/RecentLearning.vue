@@ -6,11 +6,16 @@
         <view class="course-info">
           <text class="course-name">{{ item.name }}</text>
           <view class="progress-bar-container">
-            <view class="progress-bar">
-              <view class="progress-inner" :style="{ width: item.progress + '%' }">
-                <view class="progress-badge">{{ item.progress }}%</view>
-              </view>
-            </view>
+            <fui-progress 
+              :percent="item.progress"
+              :showInfo="true"
+              :activeColor="'#007AFF'"
+              :background="'#f0f0f0'"
+              :height="10"
+              :radius="5"
+              :size="26"
+              :percentWidth="60"
+            />
           </view>
         </view>
       </view>
@@ -19,27 +24,35 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import fuiProgress from "@/components/firstui/FirstUI-vue/components/firstui/fui-progress/fui-progress.vue"
+
 export default {
   name: 'RecentLearning',
-  data() {
+  components: {
+    fuiProgress
+  },
+  setup() {
+    const learningItems = ref([
+      {
+        name: '基础发音课程',
+        progress: 80,
+        icon: '/static/icons/demo.png'
+      },
+      {
+        name: '日常对话练习',
+        progress: 45,
+        icon: '/static/icons/demo.png'
+      },
+      {
+        name: '趣味单词记忆',
+        progress: 60,
+        icon: '/static/icons/demo.png'
+      }
+    ])
+
     return {
-      learningItems: [
-        {
-          name: '基础发音课程',
-          progress: 80,
-          icon: '/static/icons/demo.png'
-        },
-        {
-          name: '日常对话练习',
-          progress: 45,
-          icon: '/static/icons/demo.png'
-        },
-        {
-          name: '趣味单词记忆',
-          progress: 60,
-          icon: '/static/icons/demo.png'
-        }
-      ]
+      learningItems
     }
   }
 }
@@ -66,7 +79,7 @@ export default {
 
       .course-info {
         flex: 1;
-        width: 0; // 确保文本可以正确换行
+        width: 0;
 
         .course-name {
           font-size: 28rpx;
@@ -78,35 +91,6 @@ export default {
         .progress-bar-container {
           position: relative;
           width: 100%;
-          
-          .progress-bar {
-            height: 10rpx;
-            background-color: #f0f0f0;
-            border-radius: 5rpx;
-            overflow: visible; // 允许进度标签超出进度条
-
-            .progress-inner {
-              position: relative;
-              height: 100%;
-              background-color: #007AFF;
-              border-radius: 5rpx;
-              transition: width 0.3s ease;
-
-              .progress-badge {
-                position: absolute;
-                right: -20rpx;
-                top: 50%;
-                background-color: #007AFF;
-                color: #fff;
-                font-size: 20rpx;
-                padding: 4rpx 12rpx;
-                border-radius: 20rpx;
-                transform: translate(50%, -50%);
-                white-space: nowrap;
-                z-index: 1;
-              }
-            }
-          }
         }
       }
     }
