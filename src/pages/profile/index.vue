@@ -89,13 +89,16 @@
 </template>
 
 <script setup lang="ts">
+// 声明uni类型
+declare const uni: any;
+
 import { ref, computed } from 'vue'
-import DailyGoals from '@/components/profile/DailyGoals.vue'
-import Achievements from '@/components/profile/Achievements.vue'
-import RecentLearning from '@/components/profile/RecentLearning.vue'
-import LearningHistory from '@/components/profile/LearningHistory.vue'
-import LogoutButton from '@/components/profile/LogoutButton.vue'
-import fuiAvatar from "@/components/firstui/FirstUI-vue/components/firstui/fui-avatar/fui-avatar.vue"
+import DailyGoals from '../../components/profile/DailyGoals.vue'
+import Achievements from '../../components/profile/Achievements.vue'
+import RecentLearning from '../../components/profile/RecentLearning.vue'
+import LearningHistory from '../../components/profile/LearningHistory.vue'
+import LogoutButton from '../../components/profile/LogoutButton.vue'
+import fuiAvatar from "../../components/firstui/FirstUI-vue/components/firstui/fui-avatar/fui-avatar.vue"
 
 // Mock 用户数据
 const userData = ref({

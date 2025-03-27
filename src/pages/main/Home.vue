@@ -4,16 +4,12 @@
 		<view class="content-area">
 			<!-- 主页内容 -->
 			<view v-if="activeTab === 'home'" class="page-content">
-				<view class="empty-content">
-					<text class="empty-text">主页功能即将上线</text>
-				</view>
+				<home-content />
 			</view>
 			
-			<!-- 对话内容 -->
+			<!-- 对话（智慧体列表）内容 -->
 			<view v-if="activeTab === 'message'" class="page-content">
-				<view class="empty-content">
-					<text class="empty-text">消息功能即将上线</text>
-				</view>
+				<ai-list />
 			</view>
 			
 			<!-- 课程内容 -->
@@ -24,7 +20,7 @@
 			</view>
 			
 			<!-- 我的内容 -->
-			<view v-if="activeTab === 'my'" class="page-content">
+			<view v-if="activeTab === 'profile'" class="page-content">
 				<Profile />
 			</view>
 		</view>
@@ -38,9 +34,13 @@
 import { ref, onMounted } from 'vue';
 import TabBar from '../../components/TabBar.vue';
 import Profile from '../profile/index.vue';
+import HomeContent from '../home/index.vue';
+import AiList from '../home/AiList.vue';
 
 // 声明uni类型
 declare const uni: any;
+declare const getCurrentPages: any;
+declare const getApp: any;
 
 // 当前选中的标签页
 const activeTab = ref('home');
@@ -57,6 +57,21 @@ onMounted(() => {
 		} else {
 			// 如果没有登录信息，跳转到登录页
 			redirectToLogin();
+		}
+		
+		// 获取URL参数中的tab
+		const pages = getCurrentPages();
+		const currentPage = pages[pages.length - 1];
+		const tab = currentPage?.options?.tab;
+		if (tab) {
+			activeTab.value = tab;
+		}
+
+		// 注册到全局
+		const app = getApp()
+		app.globalData = app.globalData || {}
+		app.globalData.homePage = {
+			handleTabChange: handleTabChange
 		}
 	} catch (e) {
 		console.error('获取用户信息失败', e);

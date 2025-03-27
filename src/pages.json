@@ -20,6 +20,34 @@
 				"navigationBarTitleText": "智云星课",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/home/NoticeList",
+			"style": {
+				"navigationBarTitleText": "公告列表",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/AiList",
+			"style": {
+				"navigationBarTitleText": "智慧体中心",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/AiChat",
+			"style": {
+				"navigationBarTitleText": "智慧体聊天",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/CourseList",
+			"style": {
+				"navigationBarTitleText": "课程中心",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {

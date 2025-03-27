@@ -10,4 +10,4 @@
 - Iconfont
 
 # 注意事项
-- 在开发过程中如果需要使用到first-ui的组件，请直接从项目的components文件夹中引入
+- 在开发过程中如果需要使用到first-ui的组件，请直接从项目的components文件夹中引入，在使用FirstUI组件时一定要查找引用路径是否存在该组件

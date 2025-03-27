@@ -12,9 +12,9 @@
 			<fui-icon name="order" :size="50" :color="active === 'course' ? '#1890FF' : '#999'"></fui-icon>
 			<text class="tab-text" :class="{ 'tab-text-active': active === 'course' }">课程</text>
 		</view>
-		<view class="tab-item" :class="{ active: active === 'my' }" @click="switchTab('my')">
-			<fui-icon name="my" :size="50" :color="active === 'my' ? '#1890FF' : '#999'"></fui-icon>
-			<text class="tab-text" :class="{ 'tab-text-active': active === 'my' }">我的</text>
+		<view class="tab-item" :class="{ active: active === 'profile' }" @click="switchTab('profile')">
+			<fui-icon name="my" :size="50" :color="active === 'profile' ? '#1890FF' : '#999'"></fui-icon>
+			<text class="tab-text" :class="{ 'tab-text-active': active === 'profile' }">我的</text>
 		</view>
 	</view>
 </template>
