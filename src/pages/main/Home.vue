@@ -14,9 +14,7 @@
 			
 			<!-- 课程内容 -->
 			<view v-if="activeTab === 'course'" class="page-content">
-				<view class="empty-content">
-					<text class="empty-text">课程功能即将上线</text>
-				</view>
+				<course-list />
 			</view>
 			
 			<!-- 我的内容 -->
@@ -36,6 +34,7 @@ import TabBar from '../../components/TabBar.vue';
 import Profile from '../profile/index.vue';
 import HomeContent from '../home/index.vue';
 import AiList from '../home/AiList.vue';
+import CourseList from '../home/CourseList.vue';
 
 // 声明uni类型
 declare const uni: any;

@@ -85,12 +85,27 @@
     <!-- 热门课程 -->
     <view class="course-section">
       <view class="section-header">
-        <text class="section-title">热门课程</text>
-        <text class="view-all" @click="navigateToCourseList">更多</text>
+        <view class="title-wrapper">
+          <text class="icon">📚</text>
+          <text class="section-title">热门课程</text>
+        </view>
+        <text class="view-all" @click="switchToCourse">更多</text>
       </view>
       <view class="course-content">
-        <!-- TODO: 实现课程列表 -->
-        <text>课程列表</text>
+        <view class="course-list">
+          <view class="course-item" v-for="(course, index) in courseList" :key="index" :data-tag="course.tag">
+            <image class="course-image" :src="course.image" mode="aspectFill" />
+            <view class="course-info">
+              <view class="course-title">{{ course.title }}</view>
+              <view class="course-desc">{{ course.description }}</view>
+              <view class="course-meta">
+                <text class="course-level" :class="[getLevelClass(course.level)]">{{ course.level }}</text>
+                <text class="course-duration">{{ course.duration }}分钟</text>
+                <text class="course-students">{{ course.students }}人在学</text>
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
 
@@ -222,12 +237,73 @@ const switchToMessage = async () => {
   }
 }
 
-// 跳转到课程列表页
-const navigateToCourseList = () => {
-  uni.navigateTo({
-    url: '/pages/home/CourseList'
-  })
+// 切换到课程标签页
+const switchToCourse = async () => {
+  const pages = getCurrentPages()
+  const page = pages[pages.length - 1]
+  
+  if (page?.$vm?.$vm?.handleTabChange) {
+    await nextTick()
+    page.$vm.$vm.handleTabChange('course')
+  } else {
+    // 如果找不到父组件的方法，尝试直接设置activeTab
+    const homePage = pages.find(p => p.route === 'pages/main/Home')
+    if (homePage?.$vm?.$vm?.activeTab) {
+      homePage.$vm.$vm.activeTab = 'course'
+    } else {
+      // 尝试通过getApp获取
+      const app = getApp()
+      if (app?.globalData?.homePage?.handleTabChange) {
+        app.globalData.homePage.handleTabChange('course')
+      }
+    }
+  }
 }
+
+// 获取难度级别对应的样式类
+const getLevelClass = (level: string): string => {
+  switch (level) {
+    case '初级':
+      return 'level-primary'
+    case '中级':
+      return 'level-intermediate'
+    case '高级':
+      return 'level-advanced'
+    default:
+      return ''
+  }
+}
+
+// Mock 课程数据
+const courseList = ref([
+  {
+    title: '商务英语口语进阶',
+    description: '学习商务场景下的专业英语表达，提升职场竞争力',
+    level: '中级',
+    duration: 45,
+    students: 1280,
+    image: '/static/demo.png',
+    tag: '热门'
+  },
+  {
+    title: '雅思写作高分技巧',
+    description: '针对雅思写作常见题型的分析与解答，助你轻松突破6.5分',
+    level: '高级',
+    duration: 60,
+    students: 968,
+    image: '/static/demo.png',
+    tag: '推荐'
+  },
+  {
+    title: '日常英语口语100句',
+    description: '覆盖生活中最常用的英语表达，让你轻松应对各种场景',
+    level: '初级',
+    duration: 30,
+    students: 2156,
+    image: '/static/demo.png',
+    tag: '入门'
+  }
+])
 </script>
 
 <style lang="scss" scoped>
@@ -407,8 +483,127 @@ const navigateToCourseList = () => {
   .course-section {
     background-color: #ffffff;
     border-radius: 16rpx;
-    padding: 20rpx;
+    padding: 24rpx;
     margin-bottom: 20rpx;
+
+    .course-content {
+      .course-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16rpx;
+
+        .course-item {
+          display: flex;
+          background-color: #f8f8f8;
+          border-radius: 12rpx;
+          padding: 16rpx;
+          position: relative;
+
+          .course-image {
+            width: 160rpx;
+            height: 160rpx;
+            border-radius: 8rpx;
+            margin-right: 16rpx;
+          }
+
+          .course-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .course-title {
+              font-size: 28rpx;
+              font-weight: 500;
+              color: #333;
+              margin-bottom: 8rpx;
+            }
+
+            .course-desc {
+              font-size: 24rpx;
+              color: #666;
+              line-height: 1.4;
+              margin-bottom: 16rpx;
+            }
+
+            .course-meta {
+              display: flex;
+              align-items: center;
+              gap: 16rpx;
+
+              .course-level {
+                padding: 4rpx 12rpx;
+                border-radius: 4rpx;
+                font-size: 24rpx;
+              }
+
+              .level-primary {
+                color: #4CAF50;
+                background-color: rgba(76, 175, 80, 0.1);
+              }
+
+              .level-intermediate {
+                color: #FF9800;
+                background-color: rgba(255, 152, 0, 0.1);
+              }
+
+              .level-advanced {
+                color: #FF5252;
+                background-color: rgba(255, 82, 82, 0.1);
+              }
+
+              .course-duration,
+              .course-students {
+                font-size: 24rpx;
+                color: #999;
+              }
+            }
+          }
+
+          &[data-tag="入门"] {
+            &::before {
+              content: attr(data-tag);
+              position: absolute;
+              top: 16rpx;
+              left: 16rpx;
+              background-color: #4CAF50;
+              color: #fff;
+              font-size: 20rpx;
+              padding: 4rpx 12rpx;
+              border-radius: 4rpx;
+            }
+          }
+
+          &[data-tag="推荐"] {
+            &::before {
+              content: attr(data-tag);
+              position: absolute;
+              top: 16rpx;
+              left: 16rpx;
+              background-color: #FF9800;
+              color: #fff;
+              font-size: 20rpx;
+              padding: 4rpx 12rpx;
+              border-radius: 4rpx;
+            }
+          }
+
+          &[data-tag="热门"] {
+            &::before {
+              content: attr(data-tag);
+              position: absolute;
+              top: 16rpx;
+              left: 16rpx;
+              background-color: #FF5252;
+              color: #fff;
+              font-size: 20rpx;
+              padding: 4rpx 12rpx;
+              border-radius: 4rpx;
+            }
+          }
+        }
+      }
+    }
   }
 
   .word-section {
