@@ -48,6 +48,34 @@
 				"navigationBarTitleText": "课程中心",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/home/Search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/WordList",
+			"style": {
+				"navigationBarTitleText": "单词列表",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/ArticleList",
+			"style": {
+				"navigationBarTitleText": "美文列表",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/ArticleDetail",
+			"style": {
+				"navigationBarTitleText": "美文详情",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {

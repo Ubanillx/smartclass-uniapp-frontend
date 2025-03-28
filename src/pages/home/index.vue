@@ -9,8 +9,8 @@
         :padding="'24rpx 30rpx'"
         :height="'72rpx'"
         :border="false"
-        @search="handleSearch"
-        @clear="handleClear"
+        :disabled="true"
+        @click="navigateToSearch"
       />
     </view>
 
@@ -112,24 +112,54 @@
     <!-- 每日单词 -->
     <view class="word-section">
       <view class="section-header">
-        <text class="section-title">每日单词</text>
-        <text class="view-all">查看详情</text>
+        <view class="title-wrapper">
+          <text class="icon">🔤</text>
+          <text class="section-title">每日单词</text>
+        </view>
+        <text class="view-all" @click="navigateToWord">更多</text>
       </view>
       <view class="word-content">
-        <!-- TODO: 实现每日单词展示 -->
-        <text>每日单词内容</text>
+        <view class="word-card">
+          <view class="word-bookmark">
+            <image src="/static/bookmark.png" mode="aspectFit" class="bookmark-icon" />
+          </view>
+          <view class="word-main">
+            <text class="word-text">{{ dailyWord.word }}</text>
+            <text class="word-phonetic">{{ dailyWord.phonetic }}</text>
+            <text class="word-meaning">{{ dailyWord.meaning }}</text>
+            <text class="word-example">{{ dailyWord.example }}</text>
+          </view>
+          <view class="word-star" @click.stop="toggleWordFavorite">
+            <text class="star-icon" :class="{'starred': dailyWord.isFavorite}">{{ dailyWord.isFavorite ? '★' : '☆' }}</text>
+          </view>
+        </view>
       </view>
     </view>
 
     <!-- 每日美文 -->
     <view class="article-section">
       <view class="section-header">
-        <text class="section-title">每日美文</text>
-        <text class="view-all">更多</text>
+        <view class="title-wrapper">
+          <text class="icon">📝</text>
+          <text class="section-title">每日美文</text>
+        </view>
+        <text class="view-all" @click="navigateToArticle">更多</text>
       </view>
       <view class="article-content">
-        <!-- TODO: 实现美文展示 -->
-        <text>美文内容</text>
+        <view class="article-list">
+          <view class="article-item" v-for="(article, index) in articles" :key="index" @click="navigateToArticleDetail(article)">
+            <image class="article-image" :src="article.image" mode="aspectFill" />
+            <view class="article-info">
+              <view class="article-category">
+                <text class="category-tag" :style="{backgroundColor: article.categoryColor}">{{ article.category }}</text>
+                <text class="article-duration">{{ article.duration }}分钟</text>
+                <text class="article-level">{{ article.level }}</text>
+              </view>
+              <text class="article-title">{{ article.title }}</text>
+              <text class="article-brief">{{ article.brief }}</text>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
   </view>
@@ -178,14 +208,10 @@ const navigateToNoticeList = () => {
 }
 
 // 搜索相关
-const handleSearch = (e: any) => {
-  console.log('搜索内容：', e.value)
-  // TODO: 实现搜索逻辑
-}
-
-const handleClear = () => {
-  console.log('清空搜索')
-  // TODO: 实现清空逻辑
+const navigateToSearch = () => {
+  uni.navigateTo({
+    url: '/pages/home/Search'
+  })
 }
 
 // Mock AI助手数据
@@ -304,6 +330,72 @@ const courseList = ref([
     tag: '入门'
   }
 ])
+
+// Mock 每日单词数据
+const dailyWord = ref({
+  word: 'serendipity',
+  phonetic: '/ səˌrendɪpɪtɪ /',
+  meaning: '意外发现美好事物的能力',
+  example: 'Finding this cafe was pure serendipity.',
+  isFavorite: false
+})
+
+// 切换单词收藏状态
+const toggleWordFavorite = () => {
+  dailyWord.value.isFavorite = !dailyWord.value.isFavorite
+}
+
+// 跳转到单词详情页
+const navigateToWord = () => {
+  uni.navigateTo({
+    url: '/pages/home/WordList'
+  })
+}
+
+// Mock 美文数据
+const articles = ref([
+  {
+    title: 'The Power of Positive Thinking',
+    brief: 'How optimism can change your life',
+    category: '励志',
+    categoryColor: '#ff6b6b',
+    duration: 5,
+    level: '初级',
+    image: '/static/demo.png'
+  },
+  {
+    title: 'A Journey Through Time',
+    brief: 'Exploring the history of human',
+    category: '历史',
+    categoryColor: '#74b9ff',
+    duration: 8,
+    level: '中级',
+    image: '/static/demo.png'
+  },
+  {
+    title: 'The Future of Technology',
+    brief: 'What innovations will shape our',
+    category: '科技',
+    categoryColor: '#55efc4',
+    duration: 6,
+    level: '高级',
+    image: '/static/demo.png'
+  }
+])
+
+// 跳转到美文详情页
+const navigateToArticleDetail = (article: any) => {
+  uni.navigateTo({
+    url: `/pages/home/ArticleDetail?title=${encodeURIComponent(article.title)}`
+  })
+}
+
+// 跳转到美文列表页
+const navigateToArticle = () => {
+  uni.navigateTo({
+    url: '/pages/home/ArticleList'
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -606,18 +698,166 @@ const courseList = ref([
     }
   }
 
-  .word-section {
+  .word-section, .article-section {
     background-color: #ffffff;
     border-radius: 16rpx;
-    padding: 20rpx;
+    padding: 24rpx;
     margin-bottom: 20rpx;
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16rpx;
+
+      .title-wrapper {
+        display: flex;
+        align-items: center;
+        
+        .icon {
+          font-size: 32rpx;
+          margin-right: 8rpx;
+        }
+
+        .section-title {
+          font-size: 32rpx;
+          font-weight: bold;
+          color: #333;
+        }
+      }
+
+      .view-all {
+        font-size: 24rpx;
+        color: #007AFF;
+      }
+    }
   }
 
-  .article-section {
-    background-color: #ffffff;
-    border-radius: 16rpx;
-    padding: 20rpx;
-    margin-bottom: 20rpx;
+  .word-content {
+    .word-card {
+      position: relative;
+      background-color: #f8f8f8;
+      border-radius: 16rpx;
+      padding: 30rpx;
+      padding-left: 40rpx;
+      
+      .word-bookmark {
+        position: absolute;
+        left: 0;
+        top: 20rpx;
+        
+        .bookmark-icon {
+          width: 40rpx;
+          height: 80rpx;
+        }
+      }
+      
+      .word-main {
+        display: flex;
+        flex-direction: column;
+        gap: 12rpx;
+        
+        .word-text {
+          font-size: 36rpx;
+          font-weight: bold;
+          color: #333;
+        }
+        
+        .word-phonetic {
+          font-size: 26rpx;
+          color: #666;
+          font-style: italic;
+        }
+        
+        .word-meaning {
+          font-size: 28rpx;
+          color: #333;
+          margin-top: 4rpx;
+        }
+        
+        .word-example {
+          font-size: 26rpx;
+          color: #666;
+          font-style: italic;
+          margin-top: 8rpx;
+        }
+      }
+      
+      .word-star {
+        position: absolute;
+        top: 20rpx;
+        right: 20rpx;
+        
+        .star-icon {
+          font-size: 48rpx;
+          color: #ccc;
+          
+          &.starred {
+            color: #FFD700;
+          }
+        }
+      }
+    }
+  }
+
+  .article-content {
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20rpx;
+      
+      .article-item {
+        background-color: #f8f8f8;
+        border-radius: 16rpx;
+        overflow: hidden;
+        
+        .article-image {
+          width: 100%;
+          height: 200rpx;
+          display: block;
+        }
+        
+        .article-info {
+          padding: 20rpx;
+          
+          .article-category {
+            display: flex;
+            align-items: center;
+            gap: 12rpx;
+            margin-bottom: 12rpx;
+            
+            .category-tag {
+              padding: 4rpx 12rpx;
+              border-radius: 4rpx;
+              font-size: 22rpx;
+              color: #fff;
+            }
+            
+            .article-duration, .article-level {
+              font-size: 22rpx;
+              color: #999;
+            }
+          }
+          
+          .article-title {
+            font-size: 30rpx;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8rpx;
+          }
+          
+          .article-brief {
+            font-size: 26rpx;
+            color: #666;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+      }
+    }
   }
 }
 

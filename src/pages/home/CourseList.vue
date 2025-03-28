@@ -9,6 +9,7 @@
         :padding="'24rpx 30rpx'"
         :height="'72rpx'"
         :border="false"
+        v-model="searchValue"
         @search="handleSearch"
         @clear="handleClear"
       />
@@ -149,15 +150,24 @@ const handleGradeClose = () => {
   isGradeDropdownShow.value = false
 }
 
+// 搜索文本
+const searchValue = ref('');
+
 // 搜索相关
 const handleSearch = (e: any) => {
-  console.log('搜索内容：', e.value)
-  // TODO: 实现搜索逻辑
+  const text = searchValue.value.trim();
+  if (text) {
+    console.log('课程搜索：', text);
+    // TODO: 实现搜索逻辑
+  } else {
+    console.log('搜索内容为空');
+  }
 }
 
 const handleClear = () => {
-  console.log('清空搜索')
-  // TODO: 实现清空逻辑
+  console.log('清空搜索');
+  searchValue.value = '';
+  // TODO: 重置课程列表
 }
 </script>
 
