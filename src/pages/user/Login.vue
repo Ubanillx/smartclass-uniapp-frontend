@@ -1,340 +1,276 @@
 <template>
-	<view class="login-container">
-		<!-- 返回按钮 -->
-		<view class="back-button" @click="goBack">
-			<view class="back-icon">
-				<fui-icon name="arrowleft" :size="40"></fui-icon>
-			</view>
-			<text class="back-text">登录</text>
-		</view>
-		
-		<!-- 内容区域 -->
-		<view class="content">
-			<!-- 云图标 -->
-			<view class="cloud-icon">
-				<image src="/static/logo.svg" mode="aspectFit" class="logo-image"></image>
+	<BaseLayout
+		title="登录"
+		:showBack="false"
+		:showTabBar="false"
+		textColor="#333333"
+	>
+		<view class="login-page">
+			<!-- Logo区域 -->
+			<view class="logo-box">
+				<image src="/static/logo/logo.svg" class="logo-image" mode="aspectFit"></image>
 			</view>
 			
-			<!-- 欢迎文本 -->
-			<view class="welcome-text">
-				<text class="title">欢迎来到智云星课</text>
-				<text class="subtitle">登录后即刻开启您的学习之旅</text>
+			<!-- 标题区域 -->
+			<view class="title-box">
+				<text class="main-title">欢迎来到智云星课</text>
+				<text class="sub-title">登录后即刻开启您的学习之旅</text>
 			</view>
 			
 			<!-- 表单区域 -->
-			<view class="form-container">
-				<!-- 用户名输入框 -->
-				<view class="form-item">
-					<view class="input-row">
-						<text class="form-label">用户名</text>
-						<input 
-							class="form-input" 
-							type="text" 
-							v-model="formData.username" 
-							placeholder="请输入用户名"
-							@blur="validateUsername"
-						/>
-					</view>
-					<text class="error-text" v-if="errors.username">{{ errors.username }}</text>
+			<view class="form-box">
+				<!-- 用户名输入 -->
+				<view class="input-group">
+					<text class="input-label">用户名</text>
+					<fui-input
+						v-model="formData.username"
+						placeholder="请输入用户名"
+						:borderTop="false"
+						:borderBottom="true"
+						borderColor="#dcdfe6"
+						focusBorderColor="#409EFF"
+						:padding="['24rpx', '0']"
+						:marginTop="0"
+						@blur="validateUsername"
+					></fui-input>
+					<text class="error-message" v-if="errors.username">{{ errors.username }}</text>
 				</view>
 				
-				<!-- 密码输入框 -->
-				<view class="form-item">
-					<view class="input-row">
-						<text class="form-label">密码</text>
-						<input 
-							class="form-input" 
-							:type="showPassword ? 'text' : 'password'" 
-							v-model="formData.password" 
-							placeholder="请输入密码"
-							@blur="validatePassword"
-						/>
-					</view>
-					<text class="error-text" v-if="errors.password">{{ errors.password }}</text>
+				<!-- 密码输入 -->
+				<view class="input-group">
+					<text class="input-label">密码</text>
+					<fui-input
+						v-model="formData.password"
+						:password="!showPassword"
+						placeholder="请输入密码"
+						:borderTop="false"
+						:borderBottom="true"
+						borderColor="#dcdfe6"
+						focusBorderColor="#409EFF"
+						:padding="['24rpx', '0']"
+						:marginTop="0"
+						@blur="validatePassword"
+					>
+						<template #right>
+							<text 
+								class="password-toggle" 
+								@click="showPassword = !showPassword"
+							>
+								{{ showPassword ? '隐藏' : '显示' }}
+							</text>
+						</template>
+					</fui-input>
+					<text class="error-message" v-if="errors.password">{{ errors.password }}</text>
 				</view>
 				
 				<!-- 登录按钮 -->
-				<view class="login-button-container">
-					<button class="login-button" @click="handleLogin" :disabled="isSubmitting">登录</button>
-				</view>
-				
-				<!-- 底部链接 -->
-				<view class="bottom-links">
-					<text class="forgot-password" @click="goToForgotPassword">忘记密码?</text>
-					<text class="register" @click="goToRegister">注册新账号</text>
+				<view class="button-area">
+					<fui-button
+						type="primary"
+						text="登录"
+						:bold="true"
+						:loading="isSubmitting"
+						background="linear-gradient(300deg, #6831FF 0%, #465CFF 100%)"
+						borderWidth="0"
+						@click="handleLogin"
+					></fui-button>
 				</view>
 			</view>
 		</view>
-	</view>
+	</BaseLayout>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from 'vue';
-import fuiIcon from '../../components/firstui/FirstUI-vue/components/firstui/fui-icon/fui-icon.vue';
-import { login } from '../../api/user';
+<script>
+import BaseLayout from '@/components/BaseLayout.vue';
+import fuiInput from '@/components/firstui/FirstUI-nvue/components/firstui/fui-input/fui-input.vue';
+import fuiButton from '@/components/firstui/FirstUI-nvue/components/firstui/fui-button/fui-button.vue';
+import { UserControllerService } from '@/api/generated/services/UserControllerService';
 
-// 声明uni类型，避免TypeScript报错
-declare const uni: any;
-
-// 表单数据
-const formData = reactive({
-	username: '',
-	password: ''
-});
-
-// 错误提示
-const errors = reactive({
-	username: '',
-	password: ''
-});
-
-// 表单状态
-const isSubmitting = ref(false);
-const showPassword = ref(false);
-
-// 验证用户名
-const validateUsername = () => {
-	if (!formData.username.trim()) {
-		errors.username = '用户名不能为空';
-		return false;
-	}
-	
-	if (formData.username.length < 3) {
-		errors.username = '用户名长度不能少于3个字符';
-		return false;
-	}
-	
-	errors.username = '';
-	return true;
-};
-
-// 验证密码
-const validatePassword = () => {
-	if (!formData.password) {
-		errors.password = '密码不能为空';
-		return false;
-	}
-	
-	// 移除密码格式校验
-	errors.password = '';
-	return true;
-};
-
-// 表单验证
-const validateForm = () => {
-	const isUsernameValid = validateUsername();
-	const isPasswordValid = validatePassword();
-	return isUsernameValid && isPasswordValid;
-};
-
-// 提交登录
-const handleLogin = () => {
-	if (!validateForm()) {
-		return;
-	}
-	
-	isSubmitting.value = true;
-	
-	login({
-		username: formData.username,
-		password: formData.password
-	}).then(res => {
-		if (res.code === 0 && res.data) {
-			// 保存登录信息
-			uni.setStorageSync('userInfo', res.data);
-			uni.setStorageSync('token', res.data.token || res.data.userToken);
-			uni.setStorageSync('isLoggedIn', 'true');
+export default {
+	components: {
+		BaseLayout,
+		fuiInput,
+		fuiButton
+	},
+	data() {
+		return {
+			// 表单数据
+			formData: {
+				username: '',
+				password: ''
+			},
+			// 错误提示
+			errors: {
+				username: '',
+				password: ''
+			},
+			// 表单状态
+			isSubmitting: false,
+			showPassword: false
+		};
+	},
+	methods: {
+		// 验证用户名
+		validateUsername() {
+			if (!this.formData.username.trim()) {
+				this.errors.username = '用户名不能为空';
+				return false;
+			}
 			
-			// 提示登录成功
-			uni.showToast({
-				title: '登录成功',
-				icon: 'success',
-				duration: 1500,
-				success: () => {
-					// 跳转到主页
-					setTimeout(() => {
-						uni.reLaunch({
-							url: '/pages/main/Home'
-						});
-					}, 1500);
+			if (this.formData.username.length < 3) {
+				this.errors.username = '用户名长度不能少于3个字符';
+				return false;
+			}
+			
+			this.errors.username = '';
+			return true;
+		},
+		
+		// 验证密码
+		validatePassword() {
+			if (!this.formData.password) {
+				this.errors.password = '密码不能为空';
+				return false;
+			}
+			
+			// 移除密码格式校验
+			this.errors.password = '';
+			return true;
+		},
+		
+		// 表单验证
+		validateForm() {
+			const isUsernameValid = this.validateUsername();
+			const isPasswordValid = this.validatePassword();
+			return isUsernameValid && isPasswordValid;
+		},
+		
+		// 提交登录
+		handleLogin() {
+			if (!this.validateForm()) {
+				return;
+			}
+			
+			this.isSubmitting = true;
+			
+			UserControllerService.userLoginUsingPost({
+				userLoginRequest: {
+					userAccount: this.formData.username,
+					userPassword: this.formData.password
 				}
-			});
-		} else {
-			// 登录失败
-			uni.showToast({
-				title: res.message || '登录失败',
-				icon: 'error'
+			}).then(res => {
+				if (res.code === 0 || res.code === 200) {
+					// 保存登录信息
+					uni.setStorageSync('userInfo', res.data);
+					
+					// 提示登录成功
+					uni.showToast({
+						title: '登录成功',
+						icon: 'success',
+						duration: 1500,
+						success: () => {
+							// 跳转到主页
+							setTimeout(() => {
+								uni.reLaunch({
+									url: '/pages/home/index'
+								});
+							}, 1500);
+						}
+					});
+				} else {
+					// 登录失败
+					uni.showToast({
+						title: res.message || '登录失败',
+						icon: 'none'
+					});
+				}
+			}).catch(err => {
+				console.error('登录请求错误', err);
+				uni.showToast({
+					title: err.message || '网络错误，请稍后重试',
+					icon: 'none'
+				});
+			}).finally(() => {
+				this.isSubmitting = false;
 			});
 		}
-	}).catch(err => {
-		console.error('登录请求错误', err);
-		uni.showToast({
-			title: err.message || '网络错误，请稍后重试',
-			icon: 'error'
-		});
-	}).finally(() => {
-		isSubmitting.value = false;
-	});
-};
-
-// 跳转到忘记密码页面
-const goToForgotPassword = () => {
-	uni.navigateTo({
-		url: '/pages/user/Forget'
-	});
-};
-
-// 跳转到注册页面
-const goToRegister = () => {
-	uni.navigateTo({
-		url: '/pages/user/Register'
-	});
-};
-
-// 返回上一页
-const goBack = () => {
-	uni.navigateBack();
+	}
 };
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.login-page {
 	min-height: 100vh;
-	background-color: #FFFFFF;
-	padding: 30rpx;
-}
-
-.back-button {
-	display: flex;
-	align-items: center;
-	height: 80rpx;
-	margin-bottom: 40rpx;
-	
-	.back-icon {
-		margin-right: 10rpx;
-		display: flex;
-		align-items: center;
-		
-		.back-icon-text {
-			font-size: 40rpx;
-			color: #333;
-		}
-	}
-	
-	.back-text {
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #333333;
-	}
-}
-
-.content {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 40rpx 0;
+	background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
+	padding: 60rpx 50rpx;
+	box-sizing: border-box;
 }
 
-.cloud-icon {
-	margin-bottom: 0rpx;
+.logo-box {
+	display: flex;
+	justify-content: center;
+	padding: 40rpx 0;
 	
 	.logo-image {
-		width: 200rpx;
+		width: 160rpx;
 		height: 160rpx;
 	}
 }
 
-.welcome-text {
+.title-box {
 	text-align: center;
-	margin-bottom: 60rpx;
+	margin-bottom: 80rpx;
 	
-	.title {
+	.main-title {
 		display: block;
-		font-size: 35rpx;
-		font-weight: bold;
-		color: #333333;
-		margin-bottom: 10rpx;
+		font-size: 44rpx;
+		font-weight: 600;
+		color: #2c3e50;
+		margin-bottom: 16rpx;
 	}
 	
-	.subtitle {
-		display: block;
-		font-size: 27rpx;
-		color: #999999;
+	.sub-title {
+		font-size: 28rpx;
+		color: #7f8c8d;
 	}
 }
 
-.form-container {
-	width: 90%;
-	padding: 0 20rpx;
+.form-box {
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: 24rpx;
+	padding: 50rpx 40rpx;
+	box-shadow: 0 8rpx 30rpx rgba(0, 10, 60, 0.1);
+	backdrop-filter: blur(8rpx);
 }
 
-.form-item {
-	margin-bottom: 30rpx;
-}
-
-.input-row {
-	display: flex;
-	align-items: center;
-}
-
-.form-label {
-	font-size: 26rpx;
-	color: #333333;
-	font-weight: bold;
-	width: 120rpx;
-	flex-shrink: 0;
-}
-
-.form-input {
-	flex: 1;
-	height: 80rpx;
-	border: 1px solid #EEEEEE;
-	border-radius: 8rpx;
-	padding: 0 20rpx;
-	font-size: 26rpx;
-	background-color: #F9F9F9;
-}
-
-.error-text {
-	display: block;
-	font-size: 22rpx;
-	color: #FF4D4F;
-	margin-top: 6rpx;
-	padding-left: 120rpx;
-}
-
-.login-button-container {
-	margin-top: 60rpx;
+.input-group {
 	margin-bottom: 40rpx;
 	
-	.login-button {
-		width: 100%;
-		height: 70rpx;
-		background-color: #1890FF;
-		color: #FFFFFF;
-		font-size: 26rpx;
-		font-weight: bold;
-		border-radius: 45rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: none;
-		
-		&[disabled] {
-			opacity: 0.7;
-		}
+	.input-label {
+		display: block;
+		font-size: 28rpx;
+		color: #2c3e50;
+		font-weight: 500;
+		margin-bottom: 20rpx;
+	}
+	
+	.password-toggle {
+		font-size: 28rpx;
+		color: #409EFF;
+		padding: 10rpx 16rpx;
+	}
+	
+	.error-message {
+		font-size: 24rpx;
+		color: #e74c3c;
+		padding-top: 16rpx;
+		display: block;
 	}
 }
 
-.bottom-links {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	margin-top: 30rpx;
-	
-	.forgot-password, .register {
-		font-size: 26rpx;
-		color: #1890FF;
-	}
+.button-area {
+	margin-top: 60rpx;
 }
 </style> 

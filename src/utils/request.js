@@ -1,91 +1,78 @@
 /**
  * 网络请求工具类
  */
-import axios from 'axios';
-import apiConfig from '../api/config';
+import ajax from 'uni-ajax'
+import { API_BASE_URL } from './env'
 
-// 创建axios实例
-const service = axios.create({
-  baseURL: apiConfig.BASE_URL,
-  timeout: 15000, // 请求超时时间
-  headers: {
+// 创建请求实例
+const instance = ajax.create({
+  // 使用环境变量中的基础URL
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+  header: {
     'Content-Type': 'application/json'
   }
-});
+})
 
 // 请求拦截器
-service.interceptors.request.use(
+instance.interceptors.request.use(
   config => {
-    // 在请求发送前做一些处理，例如添加token
-    const token = uni.getStorageSync('token');
+    // 在请求发送前对请求数据进行处理
+    const token = uni.getStorageSync('token')
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.header['Authorization'] = `Bearer ${token}`
     }
-    return config;
+    return config
   },
   error => {
-    console.error('请求错误：', error);
-    return Promise.reject(error);
+    // 对请求错误做些什么
+    console.log('请求错误拦截', error)
+    return Promise.reject(error)
   }
-);
+)
 
 // 响应拦截器
-service.interceptors.response.use(
+instance.interceptors.response.use(
   response => {
-    const res = response.data;
+    // 对响应数据做些什么
+    const res = response.data
     
-    // 根据自定义的错误码处理错误
-    if (res.code !== 0) {
-      // 处理特定错误码，例如未授权
-      if (res.code === 40100 || res.code === 40101) {
-        // 清除本地token
-        uni.removeStorageSync('token');
-        uni.removeStorageSync('userInfo');
-        uni.removeStorageSync('isLoggedIn');
-        
-        // 跳转到登录页
-        uni.reLaunch({
-          url: '/pages/user/Login'
-        });
-      } else {
-        // 其他错误码，显示错误信息
-        uni.showToast({
-          title: res.message || '请求失败',
-          icon: 'none'
-        });
+    // 这里可以根据后端接口规范统一处理响应
+    if (res.code !== 0 && res.code !== 200) {
+      // 处理各种错误状态码
+      uni.showToast({
+        title: res.message || '请求失败',
+        icon: 'none',
+        duration: 2000
+      })
+      
+      // 401: 未登录或token过期
+      if (res.code === 401) {
+        // 可以在这里处理登出逻辑
+        setTimeout(() => {
+          uni.navigateTo({
+            url: '/pages/user/Login'
+          })
+        }, 1500)
       }
       
-      return Promise.reject(new Error(res.message || '请求失败'));
-    } else {
-      return res;
+      return Promise.reject(res)
     }
+    
+    return res
   },
   error => {
-    console.error('响应错误：', error);
-    
-    // 处理网络错误
-    let errorMessage = '网络错误，请稍后重试';
-    
-    // 尝试从错误对象中获取更详细的错误信息
-    if (error.response) {
-      // 服务器返回了错误状态码
-      errorMessage = error.response.data?.message || `请求失败，状态码: ${error.response.status}`;
-    } else if (error.request) {
-      // 请求发送了但没有收到响应
-      errorMessage = '服务器无响应，请检查网络连接';
-    } else if (error.message) {
-      // 请求配置错误
-      errorMessage = error.message;
-    }
-    
+    // 对响应错误做些什么
+    console.log('响应错误拦截', error)
+    const errMsg = error.message || '请求失败，请稍后重试'
     uni.showToast({
-      title: errorMessage,
-      icon: 'none'
-    });
-    
-    return Promise.reject(error);
+      title: errMsg,
+      icon: 'none',
+      duration: 2000
+    })
+    return Promise.reject(error)
   }
-);
+)
 
 /**
  * 封装GET请求
@@ -95,7 +82,7 @@ service.interceptors.response.use(
  * @returns {Promise}
  */
 export function get(url, params = {}, options = {}) {
-  return service.get(url, {
+  return instance.get(url, {
     params,
     ...options
   });
@@ -109,7 +96,7 @@ export function get(url, params = {}, options = {}) {
  * @returns {Promise}
  */
 export function post(url, data = {}, options = {}) {
-  return service.post(url, data, options);
+  return instance.post(url, data, options);
 }
 
 /**
@@ -120,7 +107,7 @@ export function post(url, data = {}, options = {}) {
  * @returns {Promise}
  */
 export function put(url, data = {}, options = {}) {
-  return service.put(url, data, options);
+  return instance.put(url, data, options);
 }
 
 /**
@@ -131,10 +118,10 @@ export function put(url, data = {}, options = {}) {
  * @returns {Promise}
  */
 export function del(url, params = {}, options = {}) {
-  return service.delete(url, {
+  return instance.delete(url, {
     params,
     ...options
   });
 }
 
-export default service; 
+export default instance 
