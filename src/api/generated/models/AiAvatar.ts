@@ -1,0 +1,26 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export type AiAvatar = {
+    abilities?: string;
+    avatarAuth?: string;
+    avatarImgUrl?: string;
+    baseUrl?: string;
+    createTime?: string;
+    creatorId?: number;
+    description?: string;
+    id?: number;
+    isDelete?: number;
+    isPublic?: number;
+    name?: string;
+    personality?: string;
+    rating?: number;
+    ratingCount?: number;
+    sort?: number;
+    status?: number;
+    tags?: string;
+    updateTime?: string;
+    usageCount?: number;
+};
+

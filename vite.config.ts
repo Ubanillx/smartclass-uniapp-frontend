@@ -11,5 +11,13 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src')
     }
+  },
+  build: {
+    rollupOptions: {
+      external: [
+        // 移除无法解析的外部模块，使用正确的相对路径引用
+        // 如果需要排除这些模块，应该使用绝对路径或模块ID
+      ]
+    }
   }
 })

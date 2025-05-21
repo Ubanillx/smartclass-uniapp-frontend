@@ -1,296 +1,326 @@
 <template>
-  <view class="search-page">
-    <!-- 头部搜索栏 -->
-    <view class="header">
-      <view class="back-icon" @tap="goBack">
-        <text>&lt;</text>
-      </view>
-      <view class="search-bar-container">
-        <fui-search-bar
-          :placeholder="'请输入搜索内容'"
-          :radius="'true'"
-          :background="'#f8f8f8'"
-          :padding="'0'"
-          :height="'72rpx'"
-          :border="false"
-          :focus="true"
-          :showActionBtn="true"
-          :searchText="'搜索'"
-          v-model="searchValue"
-          @search="handleSearch"
-          @clear="handleClear"
+  <base-layout title="搜索" :showBack="true">
+    <view class="search-container">
+      <view class="custom-search" :class="{'search-active': isSearchActive}">
+        <view class="search-icon-box">
+          <view class="search-icon-circle"></view>
+          <view class="search-icon-line"></view>
+        </view>
+        <input 
+          class="search-input"
+          type="text"
+          v-model="searchText"
+          placeholder="搜索课程、文章、帖子"
+          placeholder-class="search-placeholder"
+          confirm-type="search"
+          @confirm="handleSearch"
+          @focus="setSearchActive(true)"
+          @blur="setSearchActive(false)"
+          auto-focus
         />
-      </view>
-    </view>
-
-    <!-- 热门搜索 -->
-    <view class="section hot-search">
-      <view class="section-title">
-        <text>热门搜索</text>
-      </view>
-      <view class="tag-list">
-        <view class="tag-item" v-for="(tag, index) in hotSearchTags" :key="index" @tap="selectTag(tag)">
-          <text>{{ tag }}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 搜索历史 -->
-    <view class="section search-history">
-      <view class="section-header">
-        <text class="section-title">搜索历史</text>
-        <text class="clear-btn" @tap="clearHistory">清空</text>
-      </view>
-      <view class="history-list">
-        <view class="history-item" v-for="(item, index) in searchHistory" :key="index">
-          <view class="history-content" @tap="selectHistoryItem(item)">
-            <text class="history-icon">⏱</text>
-            <text class="history-text">{{ item }}</text>
+        <view class="clear-icon" v-if="searchText" @click="clearSearchText">
+          <view class="clear-icon-circle">
+            <view class="clear-icon-line1"></view>
+            <view class="clear-icon-line2"></view>
           </view>
-          <text class="delete-icon" @tap.stop="deleteHistoryItem(index)">×</text>
+        </view>
+        <text class="search-btn" v-if="searchText" @click="handleSearch">搜索</text>
+      </view>
+      
+      <view class="search-result-container" v-if="hasSearched">
+        <view v-if="searchResults.length === 0" class="empty-result">
+          <text class="empty-text">暂无相关搜索结果</text>
+        </view>
+        <view v-else class="result-list">
+          <view class="result-item" v-for="(item, index) in searchResults" :key="index" @click="navigateToDetail(item)">
+            <text class="result-title">{{ item.title }}</text>
+            <text class="result-desc">{{ item.description }}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="search-tips" v-else>
+        <text class="tips-title">热门搜索</text>
+        <view class="hot-keywords">
+          <text 
+            class="keyword-item" 
+            v-for="(keyword, index) in hotKeywords" 
+            :key="index"
+            @click="quickSearch(keyword)"
+          >{{ keyword }}</text>
         </view>
       </view>
     </view>
-  </view>
+  </base-layout>
 </template>
 
-<script setup lang="ts">
-// 声明uni类型
-declare const uni: any;
+<script lang="ts" setup>
+import { ref } from 'vue';
+// 移除 fui-search-bar 组件的导入
+// import fuiSearchBar from '@/components/firstui/FirstUI-nvue/components/firstui/fui-search-bar/fui-search-bar.vue';
 
-import { ref, onMounted } from 'vue';
-import fuiSearchBar from "../../components/firstui/FirstUI-vue/components/firstui/fui-search-bar/fui-search-bar.vue";
+// 搜索框激活状态
+const isSearchActive = ref(true); // 默认激活，因为搜索页自动聚焦
 
-// 热门搜索标签
-const hotSearchTags = ref([
-  '阅读笔记',
-  '美术技巧',
-  '英语口语',
-  '课堂互动',
-  '古诗词',
-  '考试技巧',
-  '口语练习',
-  '编程入门'
-]);
+// 设置搜索框激活状态
+const setSearchActive = (status: boolean) => {
+  isSearchActive.value = status;
+};
 
-// 搜索历史
-const searchHistory = ref<string[]>([]);
+// 搜索关键词
+const searchText = ref('');
+// 是否已搜索
+const hasSearched = ref(false);
+// 搜索结果
+const searchResults = ref<any[]>([]);
+// 热门搜索词
+const hotKeywords = ref(['英语', '数学', 'Java', 'Python', '前端开发', '人工智能', '数据结构']);
 
-// 搜索文本
-const searchValue = ref('');
-
-// 页面加载时获取历史记录
-onMounted(() => {
-  // 从本地存储获取搜索历史
-  try {
-    const history = uni.getStorageSync('searchHistory');
-    if (history) {
-      searchHistory.value = JSON.parse(history);
-    }
-  } catch (e) {
-    console.error('读取搜索历史失败', e);
-  }
-});
-
-// 返回上一页
-const goBack = () => {
-  uni.navigateBack();
+// 清空搜索框
+const clearSearchText = () => {
+  searchText.value = '';
+  hasSearched.value = false;
 };
 
 // 处理搜索
-const handleSearch = (e: any) => {
-  // 直接使用我们的响应式变量
-  const text = searchValue.value.trim();
+const handleSearch = () => {
+  if (!searchText.value.trim()) return;
   
-  if (text) {
-    // 添加到历史记录
-    addToHistory(text);
-    
-    // 打印搜索信息
-    console.log('搜索框搜索：', text);
-    
-    // TODO: 跳转到搜索结果页或其他操作
-  } else {
-    console.log('搜索内容为空');
+  hasSearched.value = true;
+  // 模拟搜索过程，实际项目中应该调用API
+  searchResults.value = [];
+  
+  // 这里应该调用后端API进行搜索
+  // 示例代码：
+  // const params = { keyword: searchText.value };
+  // const res = await searchAPI.search(params);
+  // searchResults.value = res.data || [];
+  
+  // 模拟结果
+  setTimeout(() => {
+    if (searchText.value.includes('英语')) {
+      searchResults.value = [
+        {
+          id: 1,
+          type: 'course',
+          title: '大学英语四级冲刺班',
+          description: '针对大学英语四级考试的综合复习课程'
+        },
+        {
+          id: 2,
+          type: 'article',
+          title: '如何高效学习英语',
+          description: '分享英语学习的实用技巧和方法'
+        }
+      ];
+    }
+  }, 500);
+};
+
+// 快速搜索
+const quickSearch = (keyword: string) => {
+  searchText.value = keyword;
+  handleSearch();
+};
+
+// 跳转到详情页
+const navigateToDetail = (item: any) => {
+  let url = '';
+  if (item.type === 'course') {
+    url = `/pages/home/CourseDetail?id=${item.id}`;
+  } else if (item.type === 'article') {
+    url = `/pages/home/ArticleDetail?id=${item.id}`;
+  } else if (item.type === 'post') {
+    url = `/pages/home/PostDetail?id=${item.id}`;
   }
-};
-
-// 清空搜索框
-const handleClear = () => {
-  console.log('清空搜索框');
-  searchValue.value = '';
-};
-
-// 选择标签
-const selectTag = (tag: string) => {
-  tag = tag.trim();
-  if (tag) {
-    // 添加到历史记录
-    addToHistory(tag);
-    // 打印搜索信息
-    console.log('标签搜索：', tag);
-    // TODO: 跳转到搜索结果页或其他操作
-  }
-};
-
-// 选择历史记录项
-const selectHistoryItem = (item: string) => {
-  item = item.trim();
-  if (item) {
-    // 将记录移动到最前
-    addToHistory(item);
-    // 打印搜索信息 
-    console.log('历史记录搜索：', item);
-    // TODO: 跳转到搜索结果页或其他操作
-  }
-};
-
-// 删除单个历史记录
-const deleteHistoryItem = (index: number) => {
-  searchHistory.value.splice(index, 1);
-  saveHistory();
-};
-
-// 清空历史记录
-const clearHistory = () => {
-  searchHistory.value = [];
-  saveHistory();
-};
-
-// 添加到历史记录
-const addToHistory = (text: string) => {
-  // 如果已存在，先删除旧的
-  const index = searchHistory.value.findIndex(item => item === text);
-  if (index !== -1) {
-    searchHistory.value.splice(index, 1);
-  }
-  // 添加到最前面
-  searchHistory.value.unshift(text);
-  // 限制历史记录数量
-  if (searchHistory.value.length > 10) {
-    searchHistory.value = searchHistory.value.slice(0, 10);
-  }
-  saveHistory();
-};
-
-// 保存历史记录到本地存储
-const saveHistory = () => {
-  try {
-    uni.setStorageSync('searchHistory', JSON.stringify(searchHistory.value));
-  } catch (e) {
-    console.error('保存搜索历史失败', e);
+  
+  if (url) {
+    uni.navigateTo({ url });
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.search-page {
+<style lang="scss">
+.search-container {
+  padding: 20rpx 30rpx;
+  background-color: #f8f8f8;
   min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 30rpx;
+}
 
-  .header {
-    display: flex;
-    align-items: center;
-    padding: 20rpx;
-    background-color: #ffffff;
+.custom-search {
+  height: 72rpx;
+  background-color: #ffffff;
+  border-radius: 36rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
 
-    .back-icon {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.custom-search:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
 
-      text {
-        font-size: 40rpx;
-        color: #333;
-      }
-    }
+.search-active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  background-color: #f9f9f9;
+}
 
-    .search-bar-container {
-      flex: 1;
-    }
-  }
+.search-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: rotate(-45deg);
+  transform-origin: 56% center;
+  margin-right: 16rpx;
+  transition: transform 0.3s ease;
+}
 
-  .section {
-    margin-top: 20rpx;
-    background-color: #ffffff;
-    border-radius: 16rpx;
-    padding: 30rpx;
+.custom-search:active .search-icon-box {
+  transform: rotate(-45deg) scale(0.95);
+}
 
-    .section-title {
-      font-size: 28rpx;
-      font-weight: 500;
-      color: #333;
-      margin-bottom: 24rpx;
-    }
+.search-icon-circle {
+  width: 24rpx;
+  height: 24rpx;
+  border: 1px solid #1989fa;
+  border-radius: 50%;
+}
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24rpx;
+.search-icon-line {
+  width: 1px;
+  height: 12rpx;
+  background-color: #1989fa;
+  border-bottom-left-radius: 6rpx;
+  border-bottom-right-radius: 6rpx;
+}
 
-      .clear-btn {
-        font-size: 24rpx;
-        color: #999;
-      }
-    }
-  }
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  font-size: 28rpx;
+  color: #333;
+  background-color: transparent;
+}
 
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20rpx;
+.search-placeholder {
+  color: #999999;
+  font-size: 28rpx;
+  transition: color 0.3s ease;
+}
 
-    .tag-item {
-      padding: 10rpx 24rpx;
-      background-color: #f8f8f8;
-      border-radius: 30rpx;
+.clear-icon {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
 
-      text {
-        font-size: 26rpx;
-        color: #333;
-      }
-    }
-  }
+.clear-icon-circle {
+  width: 32rpx;
+  height: 32rpx;
+  background-color: #B2B2B2;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .history-list {
-    .history-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16rpx 0;
-      border-bottom: 1px solid #f5f5f5;
+.clear-icon-line1, .clear-icon-line2 {
+  position: absolute;
+  width: 20rpx;
+  height: 2rpx;
+  background-color: #fff;
+}
 
-      &:last-child {
-        border-bottom: none;
-      }
+.clear-icon-line1 {
+  transform: rotate(45deg);
+}
 
-      .history-content {
-        display: flex;
-        align-items: center;
-        flex: 1;
+.clear-icon-line2 {
+  transform: rotate(-45deg);
+}
 
-        .history-icon {
-          font-size: 28rpx;
-          color: #999;
-          margin-right: 16rpx;
-        }
+.search-btn {
+  font-size: 30rpx;
+  color: #3370ff;
+  margin-left: 10rpx;
+}
 
-        .history-text {
-          font-size: 26rpx;
-          color: #333;
-        }
-      }
+.search-result-container {
+  padding: 20rpx 0;
+}
 
-      .delete-icon {
-        font-size: 32rpx;
-        color: #999;
-        padding: 0 10rpx;
-      }
-    }
-  }
+.empty-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-top: 20rpx;
+}
+
+.result-list {
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.result-item {
+  padding: 30rpx;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.result-title {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  font-weight: 500;
+}
+
+.result-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+.search-tips {
+  padding: 30rpx 0;
+}
+
+.tips-title {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+.hot-keywords {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.keyword-item {
+  font-size: 26rpx;
+  color: #666;
+  background-color: #fff;
+  padding: 12rpx 30rpx;
+  border-radius: 30rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
 }
 </style> 

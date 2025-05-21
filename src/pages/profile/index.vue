@@ -1,5 +1,10 @@
 <template>
-  <view class="profile-container">
+  <base-layout
+    title="个人中心"
+    :showTabBar="true"
+    activeTab="profile"
+    @tabChange="handleTabChange"
+  >
     <!-- 用户信息区域 -->
     <view class="user-info">
       <fui-avatar 
@@ -8,7 +13,6 @@
         :background="'#007AFF'"
         :color="'#ffffff'"
         :fontSize="64"
-        shape="circle"
         :width="120"
         :height="120"
         mode="aspectFill"
@@ -23,69 +27,7 @@
         <text class="iconfont">⚙️</text>
       </view>
     </view>
-
-    <!-- 统计数据区域 -->
-    <view class="stats-container">
-      <view class="stat-item">
-        <view class="icon-clock"></view>
-        <view class="stat-number">15</view>
-        <view class="stat-label">学习天数</view>
-      </view>
-      <view class="stat-item">
-        <view class="icon-clock"></view>
-        <view class="stat-number">7</view>
-        <view class="stat-label">连续打卡</view>
-      </view>
-      <view class="stat-item">
-        <view class="icon-clock"></view>
-        <view class="stat-number">128</view>
-        <view class="stat-label">获得星星</view>
-      </view>
-      <view class="stat-item">
-        <view class="icon-clock"></view>
-        <view class="stat-number">8</view>
-        <view class="stat-label">获得徽章</view>
-      </view>
-    </view>
-
-    <!-- 今日学习目标 -->
-    <view class="section daily-goals">
-      <view class="section-header">
-        <text class="section-title">今日学习目标</text>
-        <text class="add-goal">+</text>
-      </view>
-      <daily-goals />
-    </view>
-
-    <!-- 我的成就 -->
-    <view class="section achievements">
-      <view class="section-header">
-        <text class="section-title">我的成就</text>
-        <text class="view-all">查看全部</text>
-      </view>
-      <achievements />
-    </view>
-
-    <!-- 最近学习 -->
-    <view class="section recent-learning">
-      <view class="section-header">
-        <text class="section-title">最近学习</text>
-      </view>
-      <recent-learning />
-    </view>
-
-    <!-- 学习历史记录 -->
-    <view class="section learning-history">
-      <view class="section-header">
-        <text class="section-title">学习历史记录</text>
-        <text class="view-all">查看全部</text>
-      </view>
-      <learning-history />
-    </view>
-
-    <!-- 退出登录按钮 -->
-    <logout-button />
-  </view>
+  </base-layout>
 </template>
 
 <script setup lang="ts">
@@ -93,12 +35,8 @@
 declare const uni: any;
 
 import { ref, computed } from 'vue'
-import DailyGoals from '../../components/profile/DailyGoals.vue'
-import Achievements from '../../components/profile/Achievements.vue'
-import RecentLearning from '../../components/profile/RecentLearning.vue'
-import LearningHistory from '../../components/profile/LearningHistory.vue'
-import LogoutButton from '../../components/profile/LogoutButton.vue'
-import fuiAvatar from "../../components/firstui/FirstUI-vue/components/firstui/fui-avatar/fui-avatar.vue"
+import LogoutButton from '@/components/profile/LogoutButton.vue'
+import fuiAvatar from "@/components/firstui/FirstUI-nvue/components/firstui/fui-avatar/fui-avatar.vue"
 
 // Mock 用户数据
 const userData = ref({
@@ -106,7 +44,7 @@ const userData = ref({
   phone: '156****9905',
   level: 3,
   nextLevelExp: 100,
-  avatar: '../../static/demo.png' // 空字符串表示没有头像
+  avatar: '/static/demo.png' // 空字符串表示没有头像
 })
 
 // 计算属性：头像文本（用户名首字母）
@@ -121,15 +59,14 @@ const userAvatar = computed(() => {
 
 // 解构用户数据
 const { username, phone, level, nextLevelExp } = userData.value
+
+// 处理标签变更
+const handleTabChange = (tab: string) => {
+  console.log('切换到标签:', tab);
+};
 </script>
 
 <style lang="scss" scoped>
-.profile-container {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 20rpx;
-}
-
 .user-info {
   background-color: #ffffff;
   border-radius: 16rpx;
@@ -137,7 +74,7 @@ const { username, phone, level, nextLevelExp } = userData.value
   display: flex;
   align-items: center;
   position: relative;
-  margin-bottom: 20rpx;
+  margin: 20rpx;
 
   .user-details {
     margin-left: 20rpx;
@@ -177,7 +114,7 @@ const { username, phone, level, nextLevelExp } = userData.value
   padding: 30rpx;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20rpx;
+  margin: 0 20rpx 20rpx;
 
   .stat-item {
     text-align: center;
@@ -189,9 +126,7 @@ const { username, phone, level, nextLevelExp } = userData.value
         justify-content: center;
         width: 40rpx;
         height: 40rpx;
-        background-image: url('../../static/icons/示例.svg');
-        background-size: cover;
-        background-position: center;
+        /* 删除图标引用 */
     }
 
     .stat-icon {
@@ -217,7 +152,7 @@ const { username, phone, level, nextLevelExp } = userData.value
   background-color: #ffffff;
   border-radius: 16rpx;
   padding: 30rpx;
-  margin-bottom: 20rpx;
+  margin: 0 20rpx 20rpx;
 
   .section-header {
     display: flex;
